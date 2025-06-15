@@ -103,15 +103,15 @@ const StoreFeed = () => {
   };
 
   return (
-    <Card>
-      <CardHeader>
+    <Card className="shadow-lg border-0 bg-gradient-to-br from-white to-blue-50">
+      <CardHeader className="bg-gradient-to-r from-blue-600 to-teal-600 text-white rounded-t-lg">
         <CardTitle className="flex items-center space-x-2">
-          <MessageSquare className="h-5 w-5 text-blue-500" />
+          <MessageSquare className="h-5 w-5 animate-pulse" />
           <span>Store Feed</span>
-          <Badge className="bg-blue-100 text-blue-800">Live Updates</Badge>
+          <Badge className="bg-white/20 text-white border-white/30">Live Updates</Badge>
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-6">
         {/* Quick Post Form */}
         <form onSubmit={handlePostSubmit} className="mb-6">
           <div className="flex space-x-2">
@@ -119,9 +119,9 @@ const StoreFeed = () => {
               placeholder="Post a quick note (e.g., 'Spill in aisle 3', 'Restock needed'...)"
               value={newPost}
               onChange={(e) => setNewPost(e.target.value)}
-              className="flex-1"
+              className="flex-1 border-2 border-blue-200 focus:border-blue-500 transition-colors"
             />
-            <Button type="submit" size="sm">
+            <Button type="submit" className="bg-gradient-to-r from-blue-600 to-teal-600 hover:from-blue-700 hover:to-teal-700 transform hover:scale-105 transition-all duration-200">
               <Send className="h-4 w-4" />
             </Button>
           </div>
@@ -129,10 +129,11 @@ const StoreFeed = () => {
 
         {/* Posts Feed */}
         <div className="space-y-4 max-h-96 overflow-y-auto">
-          {posts.map((post) => (
+          {posts.map((post, index) => (
             <div
               key={post.id}
-              className="border rounded-lg p-4 hover:bg-gray-50 transition-colors"
+              className="border rounded-lg p-4 hover:bg-gray-50 transition-all duration-300 hover:shadow-md transform hover:-translate-y-1 animate-fade-in-up"
+              style={{ animationDelay: `${index * 100}ms` }}
             >
               <div className="flex items-start justify-between mb-2">
                 <div className="flex items-center space-x-2">
@@ -140,10 +141,10 @@ const StoreFeed = () => {
                   <h4 className="font-medium text-gray-900">{post.title}</h4>
                 </div>
                 <div className="flex space-x-1">
-                  <Badge className={getTypeColor(post.type)} size="sm">
+                  <Badge className={getTypeColor(post.type)}>
                     {post.type}
                   </Badge>
-                  <Badge className={getPriorityColor(post.priority)} size="sm">
+                  <Badge className={getPriorityColor(post.priority)}>
                     {post.priority}
                   </Badge>
                 </div>
@@ -168,20 +169,20 @@ const StoreFeed = () => {
         {/* Activity Summary */}
         <div className="mt-6 pt-4 border-t border-gray-200">
           <div className="grid grid-cols-3 gap-4 text-center text-sm">
-            <div>
-              <div className="font-semibold text-blue-600">
+            <div className="bg-blue-50 p-3 rounded-lg">
+              <div className="font-semibold text-blue-600 text-xl">
                 {posts.filter(p => p.type === 'inventory').length}
               </div>
               <div className="text-gray-600">Inventory Alerts</div>
             </div>
-            <div>
-              <div className="font-semibold text-orange-600">
+            <div className="bg-orange-50 p-3 rounded-lg">
+              <div className="font-semibold text-orange-600 text-xl">
                 {posts.filter(p => p.type === 'maintenance').length}
               </div>
               <div className="text-gray-600">Maintenance Issues</div>
             </div>
-            <div>
-              <div className="font-semibold text-green-600">
+            <div className="bg-green-50 p-3 rounded-lg">
+              <div className="font-semibold text-green-600 text-xl">
                 {posts.filter(p => p.type === 'staff').length}
               </div>
               <div className="text-gray-600">Staff Notes</div>
