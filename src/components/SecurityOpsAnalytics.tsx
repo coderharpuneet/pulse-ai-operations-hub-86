@@ -1,13 +1,15 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, LineChart, Line, PieChart, Pie, Cell } from 'recharts';
 import { Download, TrendingUp, Clock, AlertTriangle, Shield, Eye, Activity } from 'lucide-react';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 const SecurityOpsAnalytics = () => {
   const [activeTab, setActiveTab] = useState('overview');
+  const [isExporting, setIsExporting] = useState(false);
 
   const incidentTypeData = [
     { type: 'Theft', count: 23, percentage: 45 },
@@ -36,9 +38,96 @@ const SecurityOpsAnalytics = () => {
 
   const COLORS = ['#ef4444', '#f97316', '#eab308', '#22c55e'];
 
+  const handleExportCSV = () => {
+    setIsExporting(true);
+    
+    // Combine all data for CSV export
+    const csvData = [
+      ['Incident Types Report'],
+      ['Type', 'Count', 'Percentage'],
+      ...incidentTypeData.map(item => [item.type, item.count, `${item.percentage}%`]),
+      [''],
+      ['Time of Day Report'],
+      ['Hour', 'Incidents'],
+      ...timeOfDayData.map(item => [item.hour, item.incidents]),
+      [''],
+      ['Staff vs Incidents Report'],
+      ['Time', 'Incidents', 'Staff Count'],
+      ...shiftOverlayData.map(item => [item.time, item.incidents, item.staffCount])
+    ];
+
+    const csvContent = csvData.map(row => row.join(',')).join('\n');
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    
+    if (link.download !== undefined) {
+      const url = URL.createObjectURL(blob);
+      link.setAttribute('href', url);
+      link.setAttribute('download', `security-analytics-${new Date().toISOString().split('T')[0]}.csv`);
+      link.style.visibility = 'hidden';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+    
+    setIsExporting(false);
+    console.log('CSV export completed');
+  };
+
+  const handleExportPDF = async () => {
+    setIsExporting(true);
+    
+    try {
+      const element = document.getElementById('analytics-content');
+      if (!element) {
+        console.error('Analytics content element not found');
+        setIsExporting(false);
+        return;
+      }
+
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff'
+      });
+      
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      
+      const pdfWidth = pdf.internal.pageSize.getWidth();
+      const pdfHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = canvas.width;
+      const imgHeight = canvas.height;
+      const ratio = Math.min(pdfWidth / imgWidth, pdfHeight / imgHeight);
+      const imgX = (pdfWidth - imgWidth * ratio) / 2;
+      const imgY = 30;
+
+      // Add title
+      pdf.setFontSize(20);
+      pdf.text('Security Operations Analytics Report', 20, 20);
+      
+      // Add date
+      pdf.setFontSize(12);
+      pdf.text(`Generated on: ${new Date().toLocaleDateString()}`, 20, 25);
+      
+      // Add the chart image
+      pdf.addImage(imgData, 'PNG', imgX, imgY, imgWidth * ratio, imgHeight * ratio);
+      
+      pdf.save(`security-analytics-${new Date().toISOString().split('T')[0]}.pdf`);
+      console.log('PDF export completed');
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+    }
+    
+    setIsExporting(false);
+  };
+
   const handleExport = (format: string) => {
-    console.log(`Exporting analytics as ${format}`);
-    // Simulate export functionality
+    if (format === 'PDF') {
+      handleExportPDF();
+    } else if (format === 'CSV') {
+      handleExportCSV();
+    }
   };
 
   const tabs = [
@@ -75,19 +164,21 @@ const SecurityOpsAnalytics = () => {
                   size="sm"
                   variant="outline"
                   onClick={() => handleExport('PDF')}
-                  className="bg-white/10 border-white/30 text-white hover:bg-white/20 transform hover:scale-105 transition-all duration-200"
+                  disabled={isExporting}
+                  className="bg-white/10 border-white/30 text-white hover:bg-white/20 transform hover:scale-105 transition-all duration-200 disabled:opacity-50"
                 >
                   <Download className="h-4 w-4 mr-1" />
-                  Export PDF
+                  {isExporting ? 'Exporting...' : 'Export PDF'}
                 </Button>
                 <Button
                   size="sm"
                   variant="outline"
                   onClick={() => handleExport('CSV')}
-                  className="bg-white/10 border-white/30 text-white hover:bg-white/20 transform hover:scale-105 transition-all duration-200"
+                  disabled={isExporting}
+                  className="bg-white/10 border-white/30 text-white hover:bg-white/20 transform hover:scale-105 transition-all duration-200 disabled:opacity-50"
                 >
                   <Download className="h-4 w-4 mr-1" />
-                  Export CSV
+                  {isExporting ? 'Exporting...' : 'Export CSV'}
                 </Button>
               </div>
             </div>
@@ -112,7 +203,7 @@ const SecurityOpsAnalytics = () => {
           </div>
         </CardHeader>
         
-        <CardContent className="p-8">
+        <CardContent className="p-8" id="analytics-content">
           {activeTab === 'overview' && (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Incident Types Chart */}
