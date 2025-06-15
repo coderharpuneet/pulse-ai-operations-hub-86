@@ -15,9 +15,148 @@ import WaterManagementSystem from './WaterManagementSystem';
 import EmployeeEngagementPlatform from './EmployeeEngagementPlatform';
 import CustomerImpactVisualization from './CustomerImpactVisualization';
 import PredictiveAnalytics from './PredictiveAnalytics';
+import { PredictiveAnalyticsData } from '../types/predictive';
 
 const SustainabilityTracker = () => {
   const [activeTab, setActiveTab] = useState('overview');
+
+  // Mock data for PredictiveAnalytics component
+  const mockPredictiveData: PredictiveAnalyticsData = {
+    riskPredictions: [
+      {
+        id: '1',
+        category: 'supply_disruption',
+        title: 'Organic Produce Supply Risk',
+        description: 'Potential disruption in organic vegetable supply due to weather conditions',
+        riskScore: 75,
+        probability: 68,
+        impact: 'high',
+        timeframe: '2-3 weeks',
+        affectedProducts: 45,
+        preventiveActions: ['Diversify suppliers', 'Increase safety stock'],
+        confidenceLevel: 82,
+        createdAt: new Date()
+      },
+      {
+        id: '2',
+        category: 'food_safety',
+        title: 'Cold Chain Temperature Alert',
+        description: 'Refrigeration system showing early signs of inefficiency',
+        riskScore: 45,
+        probability: 35,
+        impact: 'medium',
+        timeframe: '1-2 weeks',
+        affectedProducts: 120,
+        preventiveActions: ['Schedule maintenance', 'Monitor temperatures'],
+        confidenceLevel: 76,
+        createdAt: new Date()
+      }
+    ],
+    performanceMetrics: [
+      {
+        id: '1',
+        name: 'Waste Reduction',
+        value: 87,
+        unit: '%',
+        trend: 'up',
+        changePercent: 2.3,
+        benchmark: 85,
+        target: 90,
+        category: 'sustainability'
+      },
+      {
+        id: '2',
+        name: 'Energy Efficiency',
+        value: 78,
+        unit: '%',
+        trend: 'up',
+        changePercent: 1.8,
+        benchmark: 75,
+        target: 85,
+        category: 'efficiency'
+      },
+      {
+        id: '3',
+        name: 'Water Conservation',
+        value: 92,
+        unit: '%',
+        trend: 'stable',
+        changePercent: 0.9,
+        benchmark: 90,
+        target: 95,
+        category: 'sustainability'
+      },
+      {
+        id: '4',
+        name: 'Carbon Reduction',
+        value: 73,
+        unit: '%',
+        trend: 'up',
+        changePercent: 1.2,
+        benchmark: 70,
+        target: 80,
+        category: 'sustainability'
+      }
+    ],
+    supplyChainInsights: [
+      {
+        id: '1',
+        type: 'cost_saving',
+        title: 'Optimize Delivery Routes',
+        description: 'AI-identified route optimization could reduce fuel consumption by 15%',
+        potentialSavings: 25000,
+        implementationTime: '2-3 weeks',
+        difficulty: 'medium',
+        priority: 'high',
+        roiPercent: 180
+      },
+      {
+        id: '2',
+        type: 'efficiency',
+        title: 'Smart Inventory Management',
+        description: 'Predictive restocking could reduce waste and improve availability',
+        potentialSavings: 18000,
+        implementationTime: '1 month',
+        difficulty: 'easy',
+        priority: 'medium',
+        roiPercent: 145
+      }
+    ],
+    trendData: {
+      foodSafety: [
+        { timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000), value: 95, category: 'safety' },
+        { timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000), value: 94, category: 'safety' },
+        { timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000), value: 96, category: 'safety' },
+        { timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000), value: 97, category: 'safety' },
+        { timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), value: 95, category: 'safety' },
+        { timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000), value: 98, category: 'safety' }
+      ],
+      supplierPerformance: [
+        { timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000), value: 88, category: 'performance' },
+        { timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000), value: 90, category: 'performance' },
+        { timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000), value: 87, category: 'performance' },
+        { timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000), value: 92, category: 'performance' },
+        { timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), value: 89, category: 'performance' },
+        { timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000), value: 91, category: 'performance' }
+      ],
+      carbonFootprint: [
+        { timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000), value: 78, category: 'carbon' },
+        { timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000), value: 76, category: 'carbon' },
+        { timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000), value: 74, category: 'carbon' },
+        { timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000), value: 73, category: 'carbon' },
+        { timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), value: 71, category: 'carbon' },
+        { timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000), value: 70, category: 'carbon' }
+      ],
+      responseTime: [
+        { timestamp: new Date(Date.now() - 6 * 60 * 60 * 1000), value: 12, category: 'response' },
+        { timestamp: new Date(Date.now() - 5 * 60 * 60 * 1000), value: 11, category: 'response' },
+        { timestamp: new Date(Date.now() - 4 * 60 * 60 * 1000), value: 10, category: 'response' },
+        { timestamp: new Date(Date.now() - 3 * 60 * 60 * 1000), value: 9, category: 'response' },
+        { timestamp: new Date(Date.now() - 2 * 60 * 60 * 1000), value: 8, category: 'response' },
+        { timestamp: new Date(Date.now() - 1 * 60 * 60 * 1000), value: 7, category: 'response' }
+      ]
+    }
+  };
 
   const metrics = [
     {
@@ -81,7 +220,6 @@ const SustainabilityTracker = () => {
 
         <TabsContent value="overview" className="space-y-6">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Main Dashboard - keep existing code */}
             <Card className="lg:col-span-2 p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-xl font-semibold text-gray-900">Sustainability Dashboard</h3>
@@ -132,7 +270,6 @@ const SustainabilityTracker = () => {
               </div>
             </Card>
 
-            {/* Green Tokens Tracker - keep existing code */}
             <Card className="p-6">
               <div className="flex items-center justify-between mb-6">
                 <h3 className="text-lg font-semibold text-gray-900">$GREEN Tokens</h3>
@@ -172,7 +309,6 @@ const SustainabilityTracker = () => {
             </Card>
           </div>
 
-          {/* Quick Access to New Features */}
           <Card className="p-6">
             <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Access to Advanced Features</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
@@ -264,7 +400,7 @@ const SustainabilityTracker = () => {
         </TabsContent>
 
         <TabsContent value="analytics">
-          <PredictiveAnalytics />
+          <PredictiveAnalytics data={mockPredictiveData} />
         </TabsContent>
       </Tabs>
     </div>
