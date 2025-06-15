@@ -1,23 +1,27 @@
 
 import React, { useState } from 'react';
-import { Bell, Settings, User, Menu, X, Shield, Zap, Globe, Database, Users, Truck, Leaf, MapPin } from 'lucide-react';
+import { Bell, User, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { Link, useLocation } from 'react-router-dom';
+import SettingsDropdown from './SettingsDropdown';
+import LoginDialog from './LoginDialog';
 
 const Header = () => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
+  const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [adminName, setAdminName] = useState('');
   
   const isActive = (path: string) => location.pathname === path;
   
   const navItems = [
-    { path: '/live-ops', label: 'Live Ops', icon: <Zap className="h-3 w-3 sm:h-4 sm:w-4" /> },
-    { path: '/promotions', label: 'Promotions AI', icon: <Shield className="h-3 w-3 sm:h-4 sm:w-4" /> },
-    { path: '/warehouse', label: 'Warehouse', icon: <Truck className="h-3 w-3 sm:h-4 sm:w-4" /> },
-    { path: '/sustainability', label: 'Sustainability', icon: <Leaf className="h-3 w-3 sm:h-4 sm:w-4" /> },
-    { path: '/trustledger', label: 'TrustLedger', icon: <Database className="h-3 w-3 sm:h-4 sm:w-4" /> }
+    { path: '/live-ops', label: 'Live Ops', icon: <div className="h-3 w-3 sm:h-4 sm:w-4 bg-yellow-400 rounded-full" /> },
+    { path: '/promotions', label: 'Promotions AI', icon: <div className="h-3 w-3 sm:h-4 sm:w-4 bg-purple-400 rounded-full" /> },
+    { path: '/warehouse', label: 'Warehouse', icon: <div className="h-3 w-3 sm:h-4 sm:w-4 bg-orange-400 rounded-full" /> },
+    { path: '/sustainability', label: 'Sustainability', icon: <div className="h-3 w-3 sm:h-4 sm:w-4 bg-green-400 rounded-full" /> },
+    { path: '/trustledger', label: 'TrustLedger', icon: <div className="h-3 w-3 sm:h-4 sm:w-4 bg-blue-400 rounded-full" /> }
   ];
   
   const notifications = [
@@ -28,6 +32,28 @@ const Header = () => {
 
   const handleNotificationClick = () => {
     setIsNotificationOpen(!isNotificationOpen);
+  };
+
+  const handleLogin = (username: string, password: string) => {
+    // Simple demo authentication - in real app, this would call an API
+    if (username === 'admin' && password === 'admin123') {
+      setIsLoggedIn(true);
+      setAdminName('Admin User');
+      setIsLoginDialogOpen(false);
+    } else {
+      alert('Invalid credentials. Try admin/admin123');
+    }
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setAdminName('');
+  };
+
+  const handleUserClick = () => {
+    if (!isLoggedIn) {
+      setIsLoginDialogOpen(true);
+    }
   };
   
   return (
@@ -130,25 +156,22 @@ const Header = () => {
             </div>
 
             {/* Settings */}
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="text-blue-200 hover:text-white hover:bg-white/10 transition-all duration-300 p-2"
-            >
-              <Settings className="h-4 w-4 sm:h-5 sm:w-5" />
-            </Button>
+            {isLoggedIn && <SettingsDropdown onLogout={handleLogout} />}
 
             {/* User Profile */}
             <Button 
               variant="ghost" 
               size="sm" 
               className="text-blue-200 hover:text-white hover:bg-white/10 transition-all duration-300 p-2"
+              onClick={handleUserClick}
             >
               <div className="flex items-center space-x-2">
                 <div className="w-6 h-6 sm:w-8 sm:h-8 bg-gradient-to-br from-purple-500 to-pink-500 rounded-full flex items-center justify-center">
                   <User className="h-3 w-3 sm:h-4 sm:w-4 text-white" />
                 </div>
-                <span className="hidden lg:block font-medium text-sm">Admin</span>
+                <span className="hidden lg:block font-medium text-sm">
+                  {isLoggedIn ? adminName : 'Login'}
+                </span>
               </div>
             </Button>
 
@@ -195,6 +218,13 @@ const Header = () => {
           onClick={() => setIsNotificationOpen(false)}
         ></div>
       )}
+
+      {/* Login Dialog */}
+      <LoginDialog 
+        isOpen={isLoginDialogOpen}
+        onClose={() => setIsLoginDialogOpen(false)}
+        onLogin={handleLogin}
+      />
     </header>
   );
 };
