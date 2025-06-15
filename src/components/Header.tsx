@@ -8,6 +8,7 @@ import { Link, useLocation } from 'react-router-dom';
 const Header = () => {
   const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   
   const isActive = (path: string) => location.pathname === path;
   
@@ -18,6 +19,16 @@ const Header = () => {
     { path: '/sustainability', label: 'Sustainability', icon: <Leaf className="h-3 w-3 sm:h-4 sm:w-4" /> },
     { path: '/trustledger', label: 'TrustLedger', icon: <Database className="h-3 w-3 sm:h-4 sm:w-4" /> }
   ];
+  
+  const notifications = [
+    { id: 1, title: 'Security Alert', message: 'Unusual activity detected in Store #247', time: '2 min ago', type: 'critical' },
+    { id: 2, title: 'Inventory Low', message: 'Stock levels critical for 15 items', time: '5 min ago', type: 'warning' },
+    { id: 3, title: 'System Update', message: 'New AI model deployed successfully', time: '12 min ago', type: 'info' }
+  ];
+
+  const handleNotificationClick = () => {
+    setIsNotificationOpen(!isNotificationOpen);
+  };
   
   return (
     <header className="bg-gradient-to-r from-slate-900 via-blue-900 to-indigo-900 shadow-2xl sticky top-0 z-50 backdrop-blur-lg border-b border-blue-700/30">
@@ -73,16 +84,50 @@ const Header = () => {
             </div>
 
             {/* Notifications */}
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="relative text-blue-200 hover:text-white hover:bg-white/10 transition-all duration-300 p-2"
-            >
-              <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
-              <span className="absolute -top-1 -right-1 h-3 w-3 sm:h-4 sm:w-4 bg-red-500 rounded-full text-xs flex items-center justify-center text-white font-bold animate-pulse">
-                3
-              </span>
-            </Button>
+            <div className="relative">
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="relative text-blue-200 hover:text-white hover:bg-white/10 transition-all duration-300 p-2"
+                onClick={handleNotificationClick}
+              >
+                <Bell className="h-4 w-4 sm:h-5 sm:w-5" />
+                <span className="absolute -top-1 -right-1 h-3 w-3 sm:h-4 sm:w-4 bg-red-500 rounded-full text-xs flex items-center justify-center text-white font-bold animate-pulse">
+                  3
+                </span>
+              </Button>
+
+              {/* Notification Dropdown */}
+              {isNotificationOpen && (
+                <div className="absolute right-0 top-full mt-2 w-80 bg-white rounded-lg shadow-2xl border border-gray-200 z-50 animate-fade-in">
+                  <div className="p-4 border-b border-gray-200">
+                    <h3 className="text-lg font-semibold text-gray-900">Notifications</h3>
+                  </div>
+                  <div className="max-h-96 overflow-y-auto">
+                    {notifications.map((notification) => (
+                      <div key={notification.id} className="p-4 border-b border-gray-100 hover:bg-gray-50 transition-colors duration-200">
+                        <div className="flex items-start space-x-3">
+                          <div className={`w-2 h-2 rounded-full mt-2 ${
+                            notification.type === 'critical' ? 'bg-red-500' :
+                            notification.type === 'warning' ? 'bg-yellow-500' : 'bg-blue-500'
+                          }`}></div>
+                          <div className="flex-1">
+                            <h4 className="text-sm font-semibold text-gray-900">{notification.title}</h4>
+                            <p className="text-sm text-gray-600 mt-1">{notification.message}</p>
+                            <p className="text-xs text-gray-400 mt-2">{notification.time}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div className="p-4 border-t border-gray-200">
+                    <button className="w-full text-center text-sm text-blue-600 hover:text-blue-800 font-medium">
+                      View all notifications
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Settings */}
             <Button 
@@ -141,6 +186,14 @@ const Header = () => {
             ))}
           </div>
         </div>
+      )}
+
+      {/* Overlay to close notification dropdown */}
+      {isNotificationOpen && (
+        <div 
+          className="fixed inset-0 z-40" 
+          onClick={() => setIsNotificationOpen(false)}
+        ></div>
       )}
     </header>
   );
