@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -7,8 +6,26 @@ import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Wrench, AlertTriangle, Activity, Clock, Thermometer, Zap } from 'lucide-react';
 
+interface Equipment {
+  id: string;
+  name: string;
+  type: string;
+  status: string;
+  efficiency: number;
+  temperature?: number;
+  vibration?: string;
+  lastMaintenance: string;
+  nextMaintenance: string;
+  alertLevel: string;
+  batteryLevel?: number;
+  operationHours?: number;
+  powerUsage?: number;
+  scanRate?: number;
+  errorRate?: number;
+}
+
 const EquipmentMonitor = () => {
-  const [equipment, setEquipment] = useState([
+  const [equipment, setEquipment] = useState<Equipment[]>([
     {
       id: 'CONV-001',
       name: 'Conveyor Belt A',
@@ -77,19 +94,23 @@ const EquipmentMonitor = () => {
           alertLevel = 'medium';
         }
         
-        return {
+        const updatedItem: Equipment = {
           ...item,
           efficiency: newEfficiency,
           status,
-          alertLevel,
-          // Update specific metrics based on equipment type
-          ...(item.type === 'forklift' && {
-            batteryLevel: Math.max(20, Math.min(100, item.batteryLevel + (Math.random() * 6 - 3)))
-          }),
-          ...(item.type === 'cooling' && {
-            temperature: Math.max(2, Math.min(12, item.temperature + (Math.random() * 2 - 1)))
-          })
+          alertLevel
         };
+        
+        // Update specific metrics based on equipment type
+        if (item.type === 'forklift' && item.batteryLevel !== undefined) {
+          updatedItem.batteryLevel = Math.max(20, Math.min(100, item.batteryLevel + (Math.random() * 6 - 3)));
+        }
+        
+        if (item.type === 'cooling' && item.temperature !== undefined) {
+          updatedItem.temperature = Math.max(2, Math.min(12, item.temperature + (Math.random() * 2 - 1)));
+        }
+        
+        return updatedItem;
       }));
     }, 4000);
 
@@ -166,26 +187,26 @@ const EquipmentMonitor = () => {
                   </div>
                   
                   {/* Equipment-specific metrics */}
-                  {item.type === 'forklift' && (
+                  {item.type === 'forklift' && item.batteryLevel !== undefined && (
                     <div className="flex justify-between text-sm">
                       <span className="flex items-center space-x-1">
                         <Zap className="h-3 w-3" />
                         <span>Battery</span>
                       </span>
                       <span className={item.batteryLevel < 30 ? 'text-red-600 font-medium' : ''}>
-                        {item.batteryLevel?.toFixed(0)}%
+                        {item.batteryLevel.toFixed(0)}%
                       </span>
                     </div>
                   )}
                   
-                  {item.type === 'cooling' && (
+                  {item.type === 'cooling' && item.temperature !== undefined && (
                     <div className="flex justify-between text-sm">
                       <span className="flex items-center space-x-1">
                         <Thermometer className="h-3 w-3" />
                         <span>Temperature</span>
                       </span>
                       <span className={item.temperature > 10 ? 'text-red-600 font-medium' : ''}>
-                        {item.temperature?.toFixed(1)}°C
+                        {item.temperature.toFixed(1)}°C
                       </span>
                     </div>
                   )}
