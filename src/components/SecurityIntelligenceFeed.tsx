@@ -75,38 +75,42 @@ const SecurityIntelligenceFeed = () => {
   };
 
   return (
-    <Card className="mb-6">
-      <CardHeader>
-        <CardTitle className="flex items-center space-x-2">
-          <AlertTriangle className="h-5 w-5 text-red-500" />
-          <span>Security Intelligence Feed</span>
-          <Badge className="bg-red-100 text-red-800">AI-Powered</Badge>
+    <Card className="mb-4 sm:mb-6 shadow-lg border-0 bg-gradient-to-br from-white to-red-50">
+      <CardHeader className="bg-gradient-to-r from-red-600 to-pink-600 text-white rounded-t-lg">
+        <CardTitle className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
+          <div className="flex items-center space-x-2">
+            <AlertTriangle className="h-5 w-5 animate-pulse" />
+            <span className="text-lg sm:text-xl">Security Intelligence Feed</span>
+          </div>
+          <Badge className="bg-white/20 text-white border-white/30 self-start sm:self-auto">AI-Powered</Badge>
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-4 sm:p-6">
         <div className="space-y-4">
           {incidents.map((incident) => (
             <div
               key={incident.id}
-              className="border rounded-lg p-4 hover:bg-gray-50 transition-colors"
+              className="border rounded-lg p-3 sm:p-4 hover:bg-gray-50 transition-colors animate-fade-in-up"
             >
               <div className="flex items-start justify-between mb-3">
-                <div className="flex items-start space-x-3">
+                <div className="flex items-start space-x-2 sm:space-x-3 flex-1">
                   {getIncidentIcon(incident.type)}
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <h4 className="font-medium text-gray-900 capitalize">{incident.type}</h4>
-                      <Badge className={getPriorityColor(incident.priority)}>
-                        {incident.priority.toUpperCase()}
-                      </Badge>
-                      <span className="text-xs text-gray-500">
-                        Confidence: {incident.confidence}%
-                      </span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-2 mb-1">
+                      <h4 className="font-medium text-gray-900 capitalize text-sm sm:text-base">{incident.type}</h4>
+                      <div className="flex items-center space-x-2">
+                        <Badge className={getPriorityColor(incident.priority)}>
+                          {incident.priority.toUpperCase()}
+                        </Badge>
+                        <span className="text-xs text-gray-500">
+                          Confidence: {incident.confidence}%
+                        </span>
+                      </div>
                     </div>
                     <p className="text-sm text-gray-600 mb-2">{incident.description}</p>
-                    <div className="flex items-center space-x-4 text-xs text-gray-500">
+                    <div className="flex flex-col sm:flex-row sm:items-center space-y-1 sm:space-y-0 sm:space-x-4 text-xs text-gray-500">
                       <span className="flex items-center space-x-1">
-                        <MapPin className="h-3 w-3" />
+                        <MapPin className="h-3 w-3 flex-shrink-0" />
                         <span>{incident.location}</span>
                       </span>
                       <span>{incident.timestamp}</span>
@@ -116,12 +120,12 @@ const SecurityIntelligenceFeed = () => {
               </div>
               
               {incident.status === 'active' && (
-                <div className="flex space-x-2">
+                <div className="flex flex-wrap gap-2">
                   <Button
                     size="sm"
                     variant="outline"
                     onClick={() => handleAction(incident.id, 'acknowledged')}
-                    className="text-xs"
+                    className="text-xs flex-shrink-0"
                   >
                     <CheckCircle className="h-3 w-3 mr-1" />
                     Acknowledge
@@ -130,7 +134,7 @@ const SecurityIntelligenceFeed = () => {
                     size="sm"
                     variant="outline"
                     onClick={() => handleAction(incident.id, 'dismissed')}
-                    className="text-xs"
+                    className="text-xs flex-shrink-0"
                   >
                     <X className="h-3 w-3 mr-1" />
                     Dismiss
@@ -139,7 +143,7 @@ const SecurityIntelligenceFeed = () => {
                     size="sm"
                     variant="destructive"
                     onClick={() => handleAction(incident.id, 'escalated')}
-                    className="text-xs"
+                    className="text-xs flex-shrink-0"
                   >
                     <ArrowUp className="h-3 w-3 mr-1" />
                     Escalate

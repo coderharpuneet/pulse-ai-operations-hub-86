@@ -22,7 +22,7 @@ const FeaturesGrid = () => {
     {
       title: 'Live Operations',
       description: 'Real-time store operations monitoring and analytics',
-      icon: <Zap className="h-8 w-8" />,
+      icon: <Zap className="h-6 w-6 sm:h-8 sm:w-8" />,
       path: '/live-ops',
       gradient: 'from-blue-500 to-cyan-500',
       bgGradient: 'from-blue-50 to-cyan-50',
@@ -31,7 +31,7 @@ const FeaturesGrid = () => {
     {
       title: 'Promotions AI',
       description: 'AI-powered promotional campaigns and optimization',
-      icon: <TrendingUp className="h-8 w-8" />,
+      icon: <TrendingUp className="h-6 w-6 sm:h-8 sm:w-8" />,
       path: '/promotions',
       gradient: 'from-purple-500 to-pink-500',
       bgGradient: 'from-purple-50 to-pink-50',
@@ -40,7 +40,7 @@ const FeaturesGrid = () => {
     {
       title: 'Warehouse Management',
       description: 'Real-time warehouse operations and dock management',
-      icon: <Truck className="h-8 w-8" />,
+      icon: <Truck className="h-6 w-6 sm:h-8 sm:w-8" />,
       path: '/warehouse',
       gradient: 'from-orange-500 to-red-500',
       bgGradient: 'from-orange-50 to-red-50',
@@ -49,7 +49,7 @@ const FeaturesGrid = () => {
     {
       title: 'Sustainability Tracker',
       description: 'Environmental impact tracking and green initiatives',
-      icon: <Leaf className="h-8 w-8" />,
+      icon: <Leaf className="h-6 w-6 sm:h-8 sm:w-8" />,
       path: '/sustainability',
       gradient: 'from-green-500 to-emerald-500',
       bgGradient: 'from-green-50 to-emerald-50',
@@ -58,7 +58,7 @@ const FeaturesGrid = () => {
     {
       title: 'TrustLedger',
       description: 'Blockchain-powered supply chain transparency',
-      icon: <Database className="h-8 w-8" />,
+      icon: <Database className="h-6 w-6 sm:h-8 sm:w-8" />,
       path: '/trustledger',
       gradient: 'from-indigo-500 to-blue-500',
       bgGradient: 'from-indigo-50 to-blue-50',
@@ -67,7 +67,7 @@ const FeaturesGrid = () => {
     {
       title: 'Security Intelligence',
       description: 'AI-powered security monitoring and threat detection',
-      icon: <Shield className="h-8 w-8" />,
+      icon: <Shield className="h-6 w-6 sm:h-8 sm:w-8" />,
       path: '/#security',
       gradient: 'from-red-500 to-pink-500',
       bgGradient: 'from-red-50 to-pink-50',
@@ -77,7 +77,7 @@ const FeaturesGrid = () => {
     {
       title: 'Workforce Intelligence',
       description: 'Employee performance analytics and optimization',
-      icon: <Users className="h-8 w-8" />,
+      icon: <Users className="h-6 w-6 sm:h-8 sm:w-8" />,
       path: '/#workforce',
       gradient: 'from-teal-500 to-blue-500',
       bgGradient: 'from-teal-50 to-blue-50',
@@ -87,7 +87,7 @@ const FeaturesGrid = () => {
     {
       title: 'Store Heatmap',
       description: 'Live customer traffic and behavior analytics',
-      icon: <MapPin className="h-8 w-8" />,
+      icon: <MapPin className="h-6 w-6 sm:h-8 sm:w-8" />,
       path: '/#heatmap',
       gradient: 'from-yellow-500 to-orange-500',
       bgGradient: 'from-yellow-50 to-orange-50',
@@ -97,7 +97,7 @@ const FeaturesGrid = () => {
     {
       title: 'CCTV AI Detection',
       description: 'Smart surveillance with AI-powered threat detection',
-      icon: <Camera className="h-8 w-8" />,
+      icon: <Camera className="h-6 w-6 sm:h-8 sm:w-8" />,
       path: '/#cctv',
       gradient: 'from-gray-600 to-gray-800',
       bgGradient: 'from-gray-50 to-gray-100',
@@ -107,7 +107,7 @@ const FeaturesGrid = () => {
     {
       title: 'Live Analytics',
       description: 'Real-time business intelligence and reporting',
-      icon: <BarChart3 className="h-8 w-8" />,
+      icon: <BarChart3 className="h-6 w-6 sm:h-8 sm:w-8" />,
       path: '/#operations',
       gradient: 'from-violet-500 to-purple-500',
       bgGradient: 'from-violet-50 to-purple-50',
@@ -117,7 +117,7 @@ const FeaturesGrid = () => {
     {
       title: 'Dock Operations',
       description: 'Intelligent dock scheduling and logistics management',
-      icon: <Activity className="h-8 w-8" />,
+      icon: <Activity className="h-6 w-6 sm:h-8 sm:w-8" />,
       path: '/#dock',
       gradient: 'from-cyan-500 to-teal-500',
       bgGradient: 'from-cyan-50 to-teal-50',
@@ -127,11 +127,12 @@ const FeaturesGrid = () => {
     {
       title: 'Smart Monitoring',
       description: 'Comprehensive system health and performance monitoring',
-      icon: <Eye className="h-8 w-8" />,
-      path: '/',
+      icon: <Eye className="h-6 w-6 sm:h-8 sm:w-8" />,
+      path: '/#monitor',
       gradient: 'from-emerald-500 to-green-500',
       bgGradient: 'from-emerald-50 to-green-50',
-      stats: '99.7% uptime'
+      stats: '99.7% uptime',
+      isTab: true
     }
   ];
 
@@ -151,17 +152,17 @@ const FeaturesGrid = () => {
   };
 
   return (
-    <div className="mb-16">
-      <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold text-gray-900 mb-4">
+    <div className="mb-8 sm:mb-16">
+      <div className="text-center mb-8 sm:mb-12 px-4">
+        <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
           Platform <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Features</span>
         </h2>
-        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+        <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
           Explore all the powerful features of WalmartPulse.ai - from real-time analytics to AI-powered insights
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
         {features.map((feature, index) => (
           <Card 
             key={feature.title}
@@ -175,25 +176,25 @@ const FeaturesGrid = () => {
           >
             {feature.isTab ? (
               <div>
-                <CardContent className="p-6 relative">
-                  <div className="absolute top-0 right-0 w-24 h-24 opacity-10">
+                <CardContent className="p-4 sm:p-6 relative">
+                  <div className="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 opacity-10">
                     <div className={`w-full h-full bg-gradient-to-br ${feature.gradient} rounded-full transform rotate-12 group-hover:rotate-45 transition-transform duration-500`}></div>
                   </div>
                   
-                  <div className={`w-16 h-16 bg-gradient-to-br ${feature.gradient} rounded-2xl flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                  <div className={`w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br ${feature.gradient} rounded-xl sm:rounded-2xl flex items-center justify-center text-white mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
                     {feature.icon}
                   </div>
                   
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
                     {feature.title}
                   </h3>
                   
-                  <p className="text-gray-600 mb-4 leading-relaxed">
+                  <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4 leading-relaxed">
                     {feature.description}
                   </p>
                   
                   <div className="flex items-center justify-between">
-                    <span className={`text-sm font-semibold bg-gradient-to-r ${feature.gradient} bg-clip-text text-transparent`}>
+                    <span className={`text-xs sm:text-sm font-semibold bg-gradient-to-r ${feature.gradient} bg-clip-text text-transparent`}>
                       {feature.stats}
                     </span>
                     <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
@@ -202,25 +203,25 @@ const FeaturesGrid = () => {
               </div>
             ) : (
               <Link to={feature.path} className="block">
-                <CardContent className="p-6 relative">
-                  <div className="absolute top-0 right-0 w-24 h-24 opacity-10">
+                <CardContent className="p-4 sm:p-6 relative">
+                  <div className="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 opacity-10">
                     <div className={`w-full h-full bg-gradient-to-br ${feature.gradient} rounded-full transform rotate-12 group-hover:rotate-45 transition-transform duration-500`}></div>
                   </div>
                   
-                  <div className={`w-16 h-16 bg-gradient-to-br ${feature.gradient} rounded-2xl flex items-center justify-center text-white mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                  <div className={`w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br ${feature.gradient} rounded-xl sm:rounded-2xl flex items-center justify-center text-white mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
                     {feature.icon}
                   </div>
                   
-                  <h3 className="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
+                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
                     {feature.title}
                   </h3>
                   
-                  <p className="text-gray-600 mb-4 leading-relaxed">
+                  <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4 leading-relaxed">
                     {feature.description}
                   </p>
                   
                   <div className="flex items-center justify-between">
-                    <span className={`text-sm font-semibold bg-gradient-to-r ${feature.gradient} bg-clip-text text-transparent`}>
+                    <span className={`text-xs sm:text-sm font-semibold bg-gradient-to-r ${feature.gradient} bg-clip-text text-transparent`}>
                       {feature.stats}
                     </span>
                     <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>

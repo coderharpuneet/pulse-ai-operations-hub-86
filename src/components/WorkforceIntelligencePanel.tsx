@@ -87,45 +87,45 @@ const WorkforceIntelligencePanel = () => {
   const totalIncidents = employees.reduce((sum, emp) => sum + emp.nearbyIncidents, 0);
 
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle className="flex items-center justify-between">
+    <Card className="shadow-lg border-0 bg-gradient-to-br from-white to-blue-50">
+      <CardHeader className="bg-gradient-to-r from-blue-600 to-teal-600 text-white rounded-t-lg">
+        <CardTitle className="flex flex-col space-y-3 sm:space-y-0 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center space-x-2">
-            <Users className="h-5 w-5 text-blue-500" />
-            <span>Workforce Intelligence Panel</span>
+            <Users className="h-5 w-5 animate-pulse" />
+            <span className="text-lg sm:text-xl">Workforce Intelligence Panel</span>
           </div>
-          <div className="flex space-x-4 text-sm">
-            <span className="text-green-600 font-medium">On Shift: {onShiftCount}</span>
-            <span className="text-yellow-600 font-medium">On Break: {onBreakCount}</span>
-            <span className="text-red-600 font-medium">Active Incidents: {totalIncidents}</span>
+          <div className="grid grid-cols-3 gap-2 sm:flex sm:space-x-4 text-sm">
+            <span className="text-green-200 font-medium text-center sm:text-left">On Shift: {onShiftCount}</span>
+            <span className="text-yellow-200 font-medium text-center sm:text-left">On Break: {onBreakCount}</span>
+            <span className="text-red-200 font-medium text-center sm:text-left">Active Incidents: {totalIncidents}</span>
           </div>
         </CardTitle>
       </CardHeader>
-      <CardContent>
+      <CardContent className="p-4 sm:p-6">
         <div className="space-y-4">
           {employees.map((employee) => (
             <div
               key={employee.id}
-              className="border rounded-lg p-4 hover:bg-gray-50 transition-colors"
+              className="border rounded-lg p-3 sm:p-4 hover:bg-gray-50 transition-colors animate-fade-in-up"
             >
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between space-y-3 sm:space-y-0">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                    <span className="text-sm font-medium text-blue-600">
+                  <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <span className="text-xs sm:text-sm font-medium text-blue-600">
                       {employee.name.split(' ').map(n => n[0]).join('')}
                     </span>
                   </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900">{employee.name}</h4>
+                  <div className="min-w-0">
+                    <h4 className="font-medium text-gray-900 text-sm sm:text-base">{employee.name}</h4>
                     <p className="text-sm text-gray-600">{employee.role}</p>
                   </div>
                 </div>
                 
-                <div className="flex items-center space-x-3">
+                <div className="flex flex-wrap items-center gap-2 sm:space-x-3">
                   <Badge className={getStatusColor(employee.status)}>
                     <div className="flex items-center space-x-1">
                       {getStatusIcon(employee.status)}
-                      <span className="capitalize">{employee.status.replace('-', ' ')}</span>
+                      <span className="capitalize text-xs">{employee.status.replace('-', ' ')}</span>
                     </div>
                   </Badge>
                   
@@ -138,21 +138,21 @@ const WorkforceIntelligencePanel = () => {
                 </div>
               </div>
               
-              <div className="mt-3 grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600">
+              <div className="mt-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-4 text-sm text-gray-600">
                 <div className="flex items-center space-x-1">
-                  <MapPin className="h-3 w-3" />
-                  <span>{employee.location}</span>
+                  <MapPin className="h-3 w-3 flex-shrink-0" />
+                  <span className="truncate">{employee.location}</span>
                 </div>
                 <div className="flex items-center space-x-1">
-                  <Clock className="h-3 w-3" />
-                  <span>{employee.shiftStart} - {employee.shiftEnd}</span>
+                  <Clock className="h-3 w-3 flex-shrink-0" />
+                  <span className="truncate">{employee.shiftStart} - {employee.shiftEnd}</span>
                 </div>
-                <div>
-                  <span className="text-gray-500">Last seen: {employee.lastActivity}</span>
+                <div className="text-gray-500">
+                  <span>Last seen: {employee.lastActivity}</span>
                 </div>
                 {employee.status === 'on-shift' && employee.nearbyIncidents > 0 && (
                   <div>
-                    <Button size="sm" variant="outline" className="text-xs">
+                    <Button size="sm" variant="outline" className="text-xs w-full sm:w-auto">
                       Notify Employee
                     </Button>
                   </div>
