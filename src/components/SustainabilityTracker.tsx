@@ -1,11 +1,24 @@
-
-import React from 'react';
+import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Leaf, Recycle, Zap, Droplets } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Leaf, Recycle, Zap, Droplets, Users, BarChart3, Heart, RefreshCw } from 'lucide-react';
+
+// Import all the new feature components
+import SmartWasteDashboard from './SmartWasteDashboard';
+import EnergyOptimizationCenter from './EnergyOptimizationCenter';
+import SupplyChainTracker from './SupplyChainTracker';
+import CircularEconomyInitiatives from './CircularEconomyInitiatives';
+import WaterManagementSystem from './WaterManagementSystem';
+import EmployeeEngagementPlatform from './EmployeeEngagementPlatform';
+import CustomerImpactVisualization from './CustomerImpactVisualization';
+import PredictiveAnalytics from './PredictiveAnalytics';
 
 const SustainabilityTracker = () => {
+  const [activeTab, setActiveTab] = useState('overview');
+
   const metrics = [
     {
       title: 'Food Waste Reduction',
@@ -53,96 +66,207 @@ const SustainabilityTracker = () => {
   ];
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      {/* Sustainability Metrics */}
-      <Card className="lg:col-span-2 p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-xl font-semibold text-gray-900">Sustainability Dashboard</h3>
-          <div className="flex items-center space-x-2">
-            <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-            <span className="text-sm text-green-600 font-medium">87% Overall Score</span>
-          </div>
-        </div>
+    <div className="space-y-6">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+        <TabsList className="grid w-full grid-cols-4 lg:grid-cols-8">
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="waste">Smart Waste</TabsTrigger>
+          <TabsTrigger value="energy">Energy</TabsTrigger>
+          <TabsTrigger value="supply">Supply Chain</TabsTrigger>
+          <TabsTrigger value="circular">Circular Economy</TabsTrigger>
+          <TabsTrigger value="water">Water</TabsTrigger>
+          <TabsTrigger value="engagement">Engagement</TabsTrigger>
+          <TabsTrigger value="analytics">Analytics</TabsTrigger>
+        </TabsList>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {metrics.map((metric, index) => (
-            <div key={index} className="space-y-4">
-              <div className="flex items-center justify-between">
+        <TabsContent value="overview" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Main Dashboard - keep existing code */}
+            <Card className="lg:col-span-2 p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-semibold text-gray-900">Sustainability Dashboard</h3>
                 <div className="flex items-center space-x-2">
-                  <div className={`p-2 rounded-lg bg-gradient-green text-white`}>
-                    {metric.icon}
-                  </div>
-                  <div>
-                    <h4 className="font-medium text-gray-900">{metric.title}</h4>
-                    <div className="flex items-center space-x-2">
-                      <span className="text-2xl font-bold text-gray-900">
-                        {metric.current}{metric.unit}
-                      </span>
-                      <Badge className="bg-green-100 text-green-800 text-xs">
-                        {metric.trend}
-                      </Badge>
+                  <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                  <span className="text-sm text-green-600 font-medium">87% Overall Score</span>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {metrics.map((metric, index) => (
+                  <div key={index} className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <div className="p-2 rounded-lg bg-gradient-green text-white">
+                          {metric.icon}
+                        </div>
+                        <div>
+                          <h4 className="font-medium text-gray-900">{metric.title}</h4>
+                          <div className="flex items-center space-x-2">
+                            <span className="text-2xl font-bold text-gray-900">
+                              {metric.current}{metric.unit}
+                            </span>
+                            <Badge className="bg-green-100 text-green-800 text-xs">
+                              {metric.trend}
+                            </Badge>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Progress to target</span>
+                        <span className="text-gray-900">{metric.current}/{metric.target}{metric.unit}</span>
+                      </div>
+                      <Progress 
+                        value={(metric.current / metric.target) * 100} 
+                        className="h-2"
+                      />
+                    </div>
+                    
+                    <div className="text-xs text-gray-500">
+                      Target: {metric.target}{metric.unit}
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
-              
-              <div className="space-y-2">
-                <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">Progress to target</span>
-                  <span className="text-gray-900">{metric.current}/{metric.target}{metric.unit}</span>
-                </div>
-                <Progress 
-                  value={(metric.current / metric.target) * 100} 
-                  className="h-2"
-                />
-              </div>
-              
-              <div className="text-xs text-gray-500">
-                Target: {metric.target}{metric.unit}
-              </div>
-            </div>
-          ))}
-        </div>
-      </Card>
+            </Card>
 
-      {/* Green Tokens Tracker */}
-      <Card className="p-6">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-gray-900">$GREEN Tokens</h3>
-          <div className="text-right">
-            <div className="text-2xl font-bold text-green-600">1,247</div>
-            <div className="text-xs text-gray-500">Total earned today</div>
+            {/* Green Tokens Tracker - keep existing code */}
+            <Card className="p-6">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-lg font-semibold text-gray-900">$GREEN Tokens</h3>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-green-600">1,247</div>
+                  <div className="text-xs text-gray-500">Total earned today</div>
+                </div>
+              </div>
+
+              <div className="space-y-3">
+                {greenTokens.map((token, index) => (
+                  <div
+                    key={index}
+                    className="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200"
+                  >
+                    <div className="flex-1">
+                      <div className="text-sm font-medium text-gray-900">
+                        {token.action}
+                      </div>
+                      <div className="text-xs text-gray-500">{token.time}</div>
+                    </div>
+                    <div className="flex items-center space-x-1">
+                      <span className="text-sm font-bold text-green-600">+{token.tokens}</span>
+                      <Leaf className="h-4 w-4 text-green-600" />
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-6 pt-4 border-t border-gray-200">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm text-gray-600">Monthly Progress</span>
+                  <span className="text-sm font-medium text-green-600">89% to target</span>
+                </div>
+                <Progress value={89} className="mt-2 h-2" />
+              </div>
+            </Card>
           </div>
-        </div>
 
-        <div className="space-y-3">
-          {greenTokens.map((token, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200"
-            >
-              <div className="flex-1">
-                <div className="text-sm font-medium text-gray-900">
-                  {token.action}
-                </div>
-                <div className="text-xs text-gray-500">{token.time}</div>
-              </div>
-              <div className="flex items-center space-x-1">
-                <span className="text-sm font-bold text-green-600">+{token.tokens}</span>
-                <Leaf className="h-4 w-4 text-green-600" />
-              </div>
+          {/* Quick Access to New Features */}
+          <Card className="p-6">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Access to Advanced Features</h3>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+              <Button 
+                variant="outline" 
+                className="flex flex-col h-20 space-y-2"
+                onClick={() => setActiveTab('waste')}
+              >
+                <Recycle className="h-5 w-5" />
+                <span className="text-xs">Smart Waste</span>
+              </Button>
+              <Button 
+                variant="outline" 
+                className="flex flex-col h-20 space-y-2"
+                onClick={() => setActiveTab('energy')}
+              >
+                <Zap className="h-5 w-5" />
+                <span className="text-xs">Energy</span>
+              </Button>
+              <Button 
+                variant="outline" 
+                className="flex flex-col h-20 space-y-2"
+                onClick={() => setActiveTab('supply')}
+              >
+                <Leaf className="h-5 w-5" />
+                <span className="text-xs">Supply Chain</span>
+              </Button>
+              <Button 
+                variant="outline" 
+                className="flex flex-col h-20 space-y-2"
+                onClick={() => setActiveTab('circular')}
+              >
+                <RefreshCw className="h-5 w-5" />
+                <span className="text-xs">Circular</span>
+              </Button>
+              <Button 
+                variant="outline" 
+                className="flex flex-col h-20 space-y-2"
+                onClick={() => setActiveTab('water')}
+              >
+                <Droplets className="h-5 w-5" />
+                <span className="text-xs">Water</span>
+              </Button>
+              <Button 
+                variant="outline" 
+                className="flex flex-col h-20 space-y-2"
+                onClick={() => setActiveTab('engagement')}
+              >
+                <Users className="h-5 w-5" />
+                <span className="text-xs">Engagement</span>
+              </Button>
+              <Button 
+                variant="outline" 
+                className="flex flex-col h-20 space-y-2"
+                onClick={() => setActiveTab('analytics')}
+              >
+                <BarChart3 className="h-5 w-5" />
+                <span className="text-xs">Analytics</span>
+              </Button>
             </div>
-          ))}
-        </div>
+          </Card>
+        </TabsContent>
 
-        <div className="mt-6 pt-4 border-t border-gray-200">
-          <div className="flex justify-between items-center">
-            <span className="text-sm text-gray-600">Monthly Progress</span>
-            <span className="text-sm font-medium text-green-600">89% to target</span>
+        <TabsContent value="waste">
+          <SmartWasteDashboard />
+        </TabsContent>
+
+        <TabsContent value="energy">
+          <EnergyOptimizationCenter />
+        </TabsContent>
+
+        <TabsContent value="supply">
+          <SupplyChainTracker />
+        </TabsContent>
+
+        <TabsContent value="circular">
+          <CircularEconomyInitiatives />
+        </TabsContent>
+
+        <TabsContent value="water">
+          <WaterManagementSystem />
+        </TabsContent>
+
+        <TabsContent value="engagement">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <EmployeeEngagementPlatform />
+            <CustomerImpactVisualization />
           </div>
-          <Progress value={89} className="mt-2 h-2" />
-        </div>
-      </Card>
+        </TabsContent>
+
+        <TabsContent value="analytics">
+          <PredictiveAnalytics />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
