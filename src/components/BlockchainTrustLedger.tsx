@@ -1,101 +1,40 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Shield, CheckCircle, Eye, Link, Blocks, AlertTriangle, Clock, MapPin, Truck, Leaf, Users, FileText, Zap } from 'lucide-react';
+import { useBlockchainData } from '../hooks/useBlockchainData';
 
 const BlockchainTrustLedger = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const { data: blockchainData, isLoading, error, isConnected } = useBlockchainData();
 
-  const recentTransactions = [
-    { 
-      id: '0x7f2...a1b', 
-      type: 'food_safety', 
-      location: 'Produce Section', 
-      timestamp: '2 min ago',
-      status: 'verified',
-      details: 'Romaine lettuce batch traced from farm to shelf - E.coli test: NEGATIVE',
-      priority: 'high'
-    },
-    { 
-      id: '0x9c4...d3e', 
-      type: 'supplier_audit', 
-      location: 'Global Supply Chain', 
-      timestamp: '5 min ago',
-      status: 'verified',
-      details: 'Supplier factory inspection completed - Labor standards verified',
-      priority: 'medium'
-    },
-    { 
-      id: '0x1a8...f7c', 
-      type: 'product_recall', 
-      location: 'Store Network', 
-      timestamp: '12 min ago',
-      status: 'action_required',
-      details: 'Instant recall triggered for Lot#ABC123 - 47 stores affected',
-      priority: 'critical'
-    },
-    { 
-      id: '0x5b2...e9d', 
-      type: 'carbon_tracking', 
-      location: 'Transportation', 
-      timestamp: '18 min ago',
-      status: 'verified',
-      details: 'Shipment carbon footprint: 2.3 kg CO2 - 15% below target',
-      priority: 'low'
-    }
-  ];
+  // Show loading state
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">Connecting to blockchain network...</p>
+        </div>
+      </div>
+    );
+  }
 
-  const criticalIssues = [
-    {
-      id: 1,
-      title: 'Food Safety Alert',
-      description: 'Potential contamination detected in Batch #FRZ2024001',
-      affectedProducts: 1247,
-      storesImpacted: 23,
-      timeToResolve: '4 hours',
-      status: 'investigating'
-    },
-    {
-      id: 2,
-      title: 'Supplier Compliance',
-      description: 'Factory audit reveals working condition violations',
-      affectedProducts: 3456,
-      storesImpacted: 156,
-      timeToResolve: '72 hours',
-      status: 'action_required'
-    },
-    {
-      id: 3,
-      title: 'Counterfeit Detection',
-      description: 'Suspicious electronics batch identified in supply chain',
-      affectedProducts: 89,
-      storesImpacted: 7,
-      timeToResolve: '24 hours',
-      status: 'resolved'
-    }
-  ];
+  // Show error state
+  if (error || !blockchainData) {
+    return (
+      <div className="flex items-center justify-center h-64">
+        <div className="text-center">
+          <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+          <p className="text-red-600">Error loading blockchain data: {error}</p>
+        </div>
+      </div>
+    );
+  }
 
-  const traceabilityData = [
-    {
-      product: 'Organic Bananas',
-      origin: 'Ecuador - Farm Co-op #247',
-      journey: ['Harvested', 'Processed', 'Shipped', 'Distributed', 'Shelved'],
-      carbonFootprint: '1.2 kg CO2',
-      laborCompliance: 'Verified',
-      qualityChecks: 'Passed (3/3)'
-    },
-    {
-      product: 'Ground Beef',
-      origin: 'Texas Ranch - ID: TX-4429',
-      journey: ['Raised', 'Processed', 'Packaged', 'Cold Chain', 'Delivered'],
-      carbonFootprint: '15.7 kg CO2',
-      laborCompliance: 'Verified',
-      qualityChecks: 'Passed (5/5)'
-    }
-  ];
+  const { transactions, criticalIssues, traceabilityData, complianceMetrics } = blockchainData;
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -137,7 +76,7 @@ const BlockchainTrustLedger = () => {
               <Shield className="h-6 w-6 text-white" />
             </div>
             <div>
-              <div className="text-2xl font-bold text-gray-900">99.7%</div>
+              <div className="text-2xl font-bold text-gray-900">{complianceMetrics.foodSafetyScore.toFixed(1)}%</div>
               <div className="text-sm text-gray-600">Food Safety Score</div>
             </div>
           </div>
@@ -149,7 +88,7 @@ const BlockchainTrustLedger = () => {
               <CheckCircle className="h-6 w-6 text-white" />
             </div>
             <div>
-              <div className="text-2xl font-bold text-gray-900">2.3s</div>
+              <div className="text-2xl font-bold text-gray-900">{complianceMetrics.traceTime.toFixed(1)}s</div>
               <div className="text-sm text-gray-600">Product Trace Time</div>
             </div>
           </div>
@@ -161,7 +100,7 @@ const BlockchainTrustLedger = () => {
               <AlertTriangle className="h-6 w-6 text-white" />
             </div>
             <div>
-              <div className="text-2xl font-bold text-gray-900">4</div>
+              <div className="text-2xl font-bold text-gray-900">{complianceMetrics.activeRecalls}</div>
               <div className="text-sm text-gray-600">Active Recalls</div>
             </div>
           </div>
@@ -173,7 +112,7 @@ const BlockchainTrustLedger = () => {
               <Truck className="h-6 w-6 text-white" />
             </div>
             <div>
-              <div className="text-2xl font-bold text-gray-900">12,847</div>
+              <div className="text-2xl font-bold text-gray-900">{complianceMetrics.suppliersVerified.toLocaleString()}</div>
               <div className="text-sm text-gray-600">Suppliers Verified</div>
             </div>
           </div>
@@ -194,13 +133,15 @@ const BlockchainTrustLedger = () => {
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-xl font-semibold text-gray-900">Real-Time Blockchain Activity</h3>
               <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                <span className="text-sm text-gray-600">Network synchronized</span>
+                <div className={`w-3 h-3 rounded-full ${isConnected ? 'bg-green-400 animate-pulse' : 'bg-red-400'}`}></div>
+                <span className="text-sm text-gray-600">
+                  {isConnected ? 'Network synchronized' : 'Network disconnected'}
+                </span>
               </div>
             </div>
 
             <div className="space-y-4">
-              {recentTransactions.map((tx) => (
+              {transactions.map((tx) => (
                 <div
                   key={tx.id}
                   className="flex items-start space-x-4 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
@@ -360,7 +301,7 @@ const BlockchainTrustLedger = () => {
                 <div className="w-16 h-16 bg-gradient-to-br from-green-500 to-green-600 rounded-full flex items-center justify-center mx-auto mb-4">
                   <FileText className="h-8 w-8 text-white" />
                 </div>
-                <div className="text-2xl font-bold text-gray-900 mb-1">98.2%</div>
+                <div className="text-2xl font-bold text-gray-900 mb-1">{complianceMetrics.regulatoryCompliance.toFixed(1)}%</div>
                 <div className="text-sm text-gray-600 mb-4">Regulatory Compliance</div>
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between">
@@ -384,20 +325,20 @@ const BlockchainTrustLedger = () => {
                 <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Users className="h-8 w-8 text-white" />
                 </div>
-                <div className="text-2xl font-bold text-gray-900 mb-1">847</div>
+                <div className="text-2xl font-bold text-gray-900 mb-1">{complianceMetrics.supplierAudits.total}</div>
                 <div className="text-sm text-gray-600 mb-4">Supplier Audits This Month</div>
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between">
                     <span>Passed</span>
-                    <span className="text-green-600">784 (92.6%)</span>
+                    <span className="text-green-600">{complianceMetrics.supplierAudits.passed} ({((complianceMetrics.supplierAudits.passed / complianceMetrics.supplierAudits.total) * 100).toFixed(1)}%)</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Failed</span>
-                    <span className="text-red-600">41 (4.8%)</span>
+                    <span className="text-red-600">{complianceMetrics.supplierAudits.failed} ({((complianceMetrics.supplierAudits.failed / complianceMetrics.supplierAudits.total) * 100).toFixed(1)}%)</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Pending</span>
-                    <span className="text-orange-600">22 (2.6%)</span>
+                    <span className="text-orange-600">{complianceMetrics.supplierAudits.pending} ({((complianceMetrics.supplierAudits.pending / complianceMetrics.supplierAudits.total) * 100).toFixed(1)}%)</span>
                   </div>
                 </div>
               </div>
@@ -408,20 +349,20 @@ const BlockchainTrustLedger = () => {
                 <div className="w-16 h-16 bg-gradient-to-br from-purple-500 to-purple-600 rounded-full flex items-center justify-center mx-auto mb-4">
                   <Zap className="h-8 w-8 text-white" />
                 </div>
-                <div className="text-2xl font-bold text-gray-900 mb-1">2.1s</div>
+                <div className="text-2xl font-bold text-gray-900 mb-1">{complianceMetrics.responseTime.average.toFixed(1)}s</div>
                 <div className="text-sm text-gray-600 mb-4">Average Response Time</div>
                 <div className="space-y-2 text-xs">
                   <div className="flex justify-between">
                     <span>Food Safety</span>
-                    <span className="text-green-600">1.8s</span>
+                    <span className="text-green-600">{complianceMetrics.responseTime.foodSafety.toFixed(1)}s</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Product Recalls</span>
-                    <span className="text-green-600">2.3s</span>
+                    <span className="text-green-600">{complianceMetrics.responseTime.productRecalls.toFixed(1)}s</span>
                   </div>
                   <div className="flex justify-between">
                     <span>Compliance Issues</span>
-                    <span className="text-orange-600">2.7s</span>
+                    <span className="text-orange-600">{complianceMetrics.responseTime.complianceIssues.toFixed(1)}s</span>
                   </div>
                 </div>
               </div>
