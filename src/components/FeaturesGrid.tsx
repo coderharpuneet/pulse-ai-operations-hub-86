@@ -68,88 +68,84 @@ const FeaturesGrid = () => {
       title: 'Security Intelligence',
       description: 'AI-powered security monitoring and threat detection',
       icon: <Shield className="h-6 w-6 sm:h-8 sm:w-8" />,
-      path: '/#security',
+      path: '/security',
       gradient: 'from-red-500 to-pink-500',
       bgGradient: 'from-red-50 to-pink-50',
-      stats: '7 critical alerts',
-      isTab: true
+      stats: '7 critical alerts'
     },
     {
       title: 'Workforce Intelligence',
       description: 'Employee performance analytics and optimization',
       icon: <Users className="h-6 w-6 sm:h-8 sm:w-8" />,
-      path: '/#workforce',
+      path: '/workforce',
       gradient: 'from-teal-500 to-blue-500',
       bgGradient: 'from-teal-50 to-blue-50',
-      stats: '1,247 employees tracked',
-      isTab: true
+      stats: '1,247 employees tracked'
     },
     {
       title: 'Store Heatmap',
       description: 'Live customer traffic and behavior analytics',
       icon: <MapPin className="h-6 w-6 sm:h-8 sm:w-8" />,
-      path: '/#heatmap',
+      path: '/heatmap',
       gradient: 'from-yellow-500 to-orange-500',
       bgGradient: 'from-yellow-50 to-orange-50',
-      stats: 'Live tracking active',
-      isTab: true
+      stats: 'Live tracking active'
+    },
+    {
+      title: 'Store Feed',
+      description: 'Real-time store updates and operational insights',
+      icon: <Activity className="h-6 w-6 sm:h-8 sm:w-8" />,
+      path: '/store-feed',
+      gradient: 'from-cyan-500 to-teal-500',
+      bgGradient: 'from-cyan-50 to-teal-50',
+      stats: '247 live updates'
+    },
+    {
+      title: 'Quick Contacts',
+      description: 'Emergency contacts and communication channels',
+      icon: <Users className="h-6 w-6 sm:h-8 sm:w-8" />,
+      path: '/contacts',
+      gradient: 'from-emerald-500 to-green-500',
+      bgGradient: 'from-emerald-50 to-green-50',
+      stats: '24/7 support ready'
     },
     {
       title: 'CCTV AI Detection',
       description: 'Smart surveillance with AI-powered threat detection',
       icon: <Camera className="h-6 w-6 sm:h-8 sm:w-8" />,
-      path: '/#cctv',
+      path: '/cctv',
       gradient: 'from-gray-600 to-gray-800',
       bgGradient: 'from-gray-50 to-gray-100',
-      stats: '156 cameras online',
-      isTab: true
+      stats: '156 cameras online'
     },
     {
       title: 'Live Analytics',
       description: 'Real-time business intelligence and reporting',
       icon: <BarChart3 className="h-6 w-6 sm:h-8 sm:w-8" />,
-      path: '/#operations',
+      path: '/analytics',
       gradient: 'from-violet-500 to-purple-500',
       bgGradient: 'from-violet-50 to-purple-50',
-      stats: '247 KPIs tracked',
-      isTab: true
+      stats: '247 KPIs tracked'
     },
     {
       title: 'Dock Operations',
       description: 'Intelligent dock scheduling and logistics management',
       icon: <Activity className="h-6 w-6 sm:h-8 sm:w-8" />,
-      path: '/#dock',
+      path: '/dock-ops',
       gradient: 'from-cyan-500 to-teal-500',
       bgGradient: 'from-cyan-50 to-teal-50',
-      stats: '14 min avg wait time',
-      isTab: true
+      stats: '14 min avg wait time'
     },
     {
       title: 'Smart Monitoring',
       description: 'Comprehensive system health and performance monitoring',
       icon: <Eye className="h-6 w-6 sm:h-8 sm:w-8" />,
-      path: '/#monitor',
+      path: '/monitor',
       gradient: 'from-emerald-500 to-green-500',
       bgGradient: 'from-emerald-50 to-green-50',
-      stats: '99.7% uptime',
-      isTab: true
+      stats: '99.7% uptime'
     }
   ];
-
-  const handleTabClick = (path: string) => {
-    if (path.includes('#')) {
-      const tabValue = path.split('#')[1];
-      // Scroll to top first
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-      // Then trigger tab change after a short delay
-      setTimeout(() => {
-        const tabsElement = document.querySelector(`[value="${tabValue}"]`);
-        if (tabsElement) {
-          (tabsElement as HTMLElement).click();
-        }
-      }, 500);
-    }
-  };
 
   return (
     <div className="mb-8 sm:mb-16">
@@ -168,67 +164,33 @@ const FeaturesGrid = () => {
             key={feature.title}
             className={`group cursor-pointer transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 bg-gradient-to-br ${feature.bgGradient} border-0 overflow-hidden animate-fade-in-up`}
             style={{ animationDelay: `${index * 100}ms` }}
-            onClick={() => {
-              if (feature.isTab) {
-                handleTabClick(feature.path);
-              }
-            }}
           >
-            {feature.isTab ? (
-              <div>
-                <CardContent className="p-4 sm:p-6 relative">
-                  <div className="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 opacity-10">
-                    <div className={`w-full h-full bg-gradient-to-br ${feature.gradient} rounded-full transform rotate-12 group-hover:rotate-45 transition-transform duration-500`}></div>
-                  </div>
-                  
-                  <div className={`w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br ${feature.gradient} rounded-xl sm:rounded-2xl flex items-center justify-center text-white mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                    {feature.icon}
-                  </div>
-                  
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
-                    {feature.title}
-                  </h3>
-                  
-                  <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4 leading-relaxed">
-                    {feature.description}
-                  </p>
-                  
-                  <div className="flex items-center justify-between">
-                    <span className={`text-xs sm:text-sm font-semibold bg-gradient-to-r ${feature.gradient} bg-clip-text text-transparent`}>
-                      {feature.stats}
-                    </span>
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                  </div>
-                </CardContent>
-              </div>
-            ) : (
-              <Link to={feature.path} className="block">
-                <CardContent className="p-4 sm:p-6 relative">
-                  <div className="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 opacity-10">
-                    <div className={`w-full h-full bg-gradient-to-br ${feature.gradient} rounded-full transform rotate-12 group-hover:rotate-45 transition-transform duration-500`}></div>
-                  </div>
-                  
-                  <div className={`w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br ${feature.gradient} rounded-xl sm:rounded-2xl flex items-center justify-center text-white mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                    {feature.icon}
-                  </div>
-                  
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
-                    {feature.title}
-                  </h3>
-                  
-                  <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4 leading-relaxed">
-                    {feature.description}
-                  </p>
-                  
-                  <div className="flex items-center justify-between">
-                    <span className={`text-xs sm:text-sm font-semibold bg-gradient-to-r ${feature.gradient} bg-clip-text text-transparent`}>
-                      {feature.stats}
-                    </span>
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                  </div>
-                </CardContent>
-              </Link>
-            )}
+            <Link to={feature.path} className="block">
+              <CardContent className="p-4 sm:p-6 relative">
+                <div className="absolute top-0 right-0 w-16 h-16 sm:w-24 sm:h-24 opacity-10">
+                  <div className={`w-full h-full bg-gradient-to-br ${feature.gradient} rounded-full transform rotate-12 group-hover:rotate-45 transition-transform duration-500`}></div>
+                </div>
+                
+                <div className={`w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br ${feature.gradient} rounded-xl sm:rounded-2xl flex items-center justify-center text-white mb-3 sm:mb-4 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                  {feature.icon}
+                </div>
+                
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition-colors duration-300">
+                  {feature.title}
+                </h3>
+                
+                <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4 leading-relaxed">
+                  {feature.description}
+                </p>
+                
+                <div className="flex items-center justify-between">
+                  <span className={`text-xs sm:text-sm font-semibold bg-gradient-to-r ${feature.gradient} bg-clip-text text-transparent`}>
+                    {feature.stats}
+                  </span>
+                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                </div>
+              </CardContent>
+            </Link>
           </Card>
         ))}
       </div>
