@@ -3,11 +3,20 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Shield, CheckCircle, Eye, Link, Blocks, AlertTriangle, Clock, MapPin, Truck, Leaf, Users, FileText, Zap } from 'lucide-react';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Shield, CheckCircle, Eye, Link, Blocks, AlertTriangle, Clock, MapPin, Truck, Leaf, Users, FileText, Zap, Search, Filter, SortAsc, SortDesc } from 'lucide-react';
 import { useBlockchainData } from '../hooks/useBlockchainData';
+import { BlockchainTransaction } from '../types/blockchain';
 
 const BlockchainTrustLedger = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [selectedTransaction, setSelectedTransaction] = useState<BlockchainTransaction | null>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterType, setFilterType] = useState<string>('all');
+  const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
   const { data: blockchainData, isLoading, error, isConnected } = useBlockchainData();
 
   // Show loading state
@@ -35,6 +44,22 @@ const BlockchainTrustLedger = () => {
   }
 
   const { transactions, criticalIssues, traceabilityData, complianceMetrics } = blockchainData;
+
+  // Filter and sort transactions
+  const filteredTransactions = transactions
+    .filter(tx => {
+      const matchesSearch = tx.details.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           tx.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                           tx.id.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesType = filterType === 'all' || tx.type === filterType;
+      const matchesStatus = filterStatus === 'all' || tx.status === filterStatus;
+      return matchesSearch && matchesType && matchesStatus;
+    })
+    .sort((a, b) => {
+      const aTime = new Date(a.timestamp === 'Just now' ? Date.now() : Date.now() - parseInt(a.timestamp) * 60000);
+      const bTime = new Date(b.timestamp === 'Just now' ? Date.now() : Date.now() - parseInt(b.timestamp) * 60000);
+      return sortOrder === 'desc' ? bTime.getTime() - aTime.getTime() : aTime.getTime() - bTime.getTime();
+    });
 
   const getTypeIcon = (type: string) => {
     switch (type) {
@@ -64,6 +89,13 @@ const BlockchainTrustLedger = () => {
       case 'low': return 'bg-green-500';
       default: return 'bg-gray-500';
     }
+  };
+
+  const resetFilters = () => {
+    setSearchTerm('');
+    setFilterType('all');
+    setFilterStatus('all');
+    setSortOrder('desc');
   };
 
   return (
@@ -140,8 +172,68 @@ const BlockchainTrustLedger = () => {
               </div>
             </div>
 
+            {/* Enhanced Filters and Search */}
+            <div className="mb-6 space-y-4">
+              <div className="flex flex-wrap gap-4 items-center">
+                <div className="flex-1 min-w-64">
+                  <div className="relative">
+                    <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                    <Input
+                      placeholder="Search transactions..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      className="pl-10"
+                    />
+                  </div>
+                </div>
+                
+                <Select value={filterType} onValueChange={setFilterType}>
+                  <SelectTrigger className="w-48">
+                    <SelectValue placeholder="Filter by type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Types</SelectItem>
+                    <SelectItem value="food_safety">Food Safety</SelectItem>
+                    <SelectItem value="supplier_audit">Supplier Audit</SelectItem>
+                    <SelectItem value="product_recall">Product Recall</SelectItem>
+                    <SelectItem value="carbon_tracking">Carbon Tracking</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Select value={filterStatus} onValueChange={setFilterStatus}>
+                  <SelectTrigger className="w-48">
+                    <SelectValue placeholder="Filter by status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Status</SelectItem>
+                    <SelectItem value="verified">Verified</SelectItem>
+                    <SelectItem value="action_required">Action Required</SelectItem>
+                    <SelectItem value="pending">Pending</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setSortOrder(sortOrder === 'desc' ? 'asc' : 'desc')}
+                  className="flex items-center gap-2"
+                >
+                  {sortOrder === 'desc' ? <SortDesc className="h-4 w-4" /> : <SortAsc className="h-4 w-4" />}
+                  Sort
+                </Button>
+
+                <Button variant="ghost" size="sm" onClick={resetFilters}>
+                  Clear Filters
+                </Button>
+              </div>
+              
+              <div className="text-sm text-gray-500">
+                Showing {filteredTransactions.length} of {transactions.length} transactions
+              </div>
+            </div>
+
             <div className="space-y-4">
-              {transactions.map((tx) => (
+              {filteredTransactions.map((tx) => (
                 <div
                   key={tx.id}
                   className="flex items-start space-x-4 p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors"
@@ -183,11 +275,82 @@ const BlockchainTrustLedger = () => {
                     </div>
                   </div>
                   
-                  <Button size="sm" variant="ghost" className="flex-shrink-0">
-                    <Eye className="h-4 w-4" />
-                  </Button>
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button size="sm" variant="ghost" className="flex-shrink-0" onClick={() => setSelectedTransaction(tx)}>
+                        <Eye className="h-4 w-4" />
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent className="max-w-2xl">
+                      <DialogHeader>
+                        <DialogTitle>Transaction Details</DialogTitle>
+                      </DialogHeader>
+                      {selectedTransaction && (
+                        <div className="space-y-4">
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <label className="text-sm font-medium text-gray-700">Transaction ID</label>
+                              <p className="text-sm font-mono text-gray-900 bg-gray-50 p-2 rounded">{selectedTransaction.id}</p>
+                            </div>
+                            <div>
+                              <label className="text-sm font-medium text-gray-700">Block Height</label>
+                              <p className="text-sm text-gray-900">{selectedTransaction.blockHeight?.toLocaleString()}</p>
+                            </div>
+                          </div>
+                          
+                          <div>
+                            <label className="text-sm font-medium text-gray-700">Hash</label>
+                            <p className="text-sm font-mono text-gray-900 bg-gray-50 p-2 rounded break-all">{selectedTransaction.hash}</p>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <label className="text-sm font-medium text-gray-700">Type</label>
+                              <div className="mt-1">{getTypeBadge(selectedTransaction.type)}</div>
+                            </div>
+                            <div>
+                              <label className="text-sm font-medium text-gray-700">Priority</label>
+                              <div className="mt-1">
+                                <Badge className={getPriorityColor(selectedTransaction.priority).replace('bg-', 'bg-opacity-20 text-') + '-800'}>
+                                  {selectedTransaction.priority.toUpperCase()}
+                                </Badge>
+                              </div>
+                            </div>
+                          </div>
+
+                          <div>
+                            <label className="text-sm font-medium text-gray-700">Details</label>
+                            <p className="text-sm text-gray-900 mt-1">{selectedTransaction.details}</p>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-4">
+                            <div>
+                              <label className="text-sm font-medium text-gray-700">Location</label>
+                              <p className="text-sm text-gray-900">{selectedTransaction.location}</p>
+                            </div>
+                            <div>
+                              <label className="text-sm font-medium text-gray-700">Timestamp</label>
+                              <p className="text-sm text-gray-900">{selectedTransaction.timestamp}</p>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </DialogContent>
+                  </Dialog>
                 </div>
               ))}
+
+              {filteredTransactions.length === 0 && (
+                <div className="text-center py-8">
+                  <div className="text-gray-400 mb-2">
+                    <Search className="h-12 w-12 mx-auto" />
+                  </div>
+                  <p className="text-gray-600">No transactions match your current filters</p>
+                  <Button variant="outline" size="sm" onClick={resetFilters} className="mt-2">
+                    Clear Filters
+                  </Button>
+                </div>
+              )}
             </div>
           </Card>
         </TabsContent>
@@ -262,14 +425,14 @@ const BlockchainTrustLedger = () => {
                     <span className="text-sm font-medium text-gray-700">Supply Chain Journey:</span>
                     <div className="flex items-center space-x-2 mt-2">
                       {product.journey.map((step, stepIndex) => (
-                        <React.Fragment key={stepIndex}>
+                        <div key={stepIndex} className="flex items-center">
                           <div className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
                             {step}
                           </div>
                           {stepIndex < product.journey.length - 1 && (
-                            <div className="w-2 h-0.5 bg-blue-300"></div>
+                            <div className="w-2 h-0.5 bg-blue-300 mx-1"></div>
                           )}
-                        </React.Fragment>
+                        </div>
                       ))}
                     </div>
                   </div>
