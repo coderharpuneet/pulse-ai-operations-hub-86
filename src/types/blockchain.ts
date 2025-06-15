@@ -1,4 +1,3 @@
-
 export interface BlockchainTransaction {
   id: string;
   type: 'food_safety' | 'supplier_audit' | 'product_recall' | 'carbon_tracking';
@@ -53,11 +52,14 @@ export interface ComplianceMetrics {
   };
 }
 
+import { PredictiveAnalyticsData } from './predictive';
+
 export interface BlockchainData {
   transactions: BlockchainTransaction[];
   criticalIssues: CriticalIssue[];
   traceabilityData: ProductTrace[];
   complianceMetrics: ComplianceMetrics;
+  predictiveAnalytics: PredictiveAnalyticsData;
   lastUpdate: Date;
   networkStatus: 'synchronized' | 'syncing' | 'error';
 }

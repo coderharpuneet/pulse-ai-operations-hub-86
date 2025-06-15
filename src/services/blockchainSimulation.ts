@@ -1,4 +1,5 @@
 import { BlockchainTransaction, CriticalIssue, ProductTrace, ComplianceMetrics, BlockchainData } from '../types/blockchain';
+import { PredictiveAnalyticsData, RiskPrediction, PerformanceMetric, SupplyChainInsight, TrendData } from '../types/predictive';
 
 class BlockchainSimulationService {
   private data: BlockchainData;
@@ -15,6 +16,7 @@ class BlockchainSimulationService {
       criticalIssues: this.generateInitialIssues(),
       traceabilityData: this.generateInitialTraceability(),
       complianceMetrics: this.generateInitialMetrics(),
+      predictiveAnalytics: this.generateInitialPredictiveAnalytics(),
       lastUpdate: new Date(),
       networkStatus: 'synchronized'
     };
@@ -158,6 +160,194 @@ class BlockchainSimulationService {
         productRecalls: 2.3,
         complianceIssues: 2.7
       }
+    };
+  }
+
+  private generateInitialPredictiveAnalytics(): PredictiveAnalyticsData {
+    return {
+      riskPredictions: this.generateRiskPredictions(),
+      performanceMetrics: this.generatePerformanceMetrics(),
+      supplyChainInsights: this.generateSupplyChainInsights(),
+      trendData: this.generateTrendData()
+    };
+  }
+
+  private generateRiskPredictions(): RiskPrediction[] {
+    const predictions = [
+      {
+        id: 'risk-001',
+        category: 'food_safety' as const,
+        title: 'Potential E.coli Contamination',
+        description: 'AI detected abnormal temperature patterns in cold storage facility TX-001 that may lead to bacterial growth.',
+        riskScore: 78,
+        probability: 65,
+        impact: 'high' as const,
+        timeframe: '48-72 hours',
+        affectedProducts: 15420,
+        preventiveActions: ['Immediate temperature audit', 'Enhanced sanitization', 'Product testing'],
+        confidenceLevel: 87,
+        createdAt: new Date()
+      },
+      {
+        id: 'risk-002',
+        category: 'supply_disruption' as const,
+        title: 'Supplier Delivery Delays',
+        description: 'Weather patterns and traffic data suggest 35% chance of delivery delays from key supplier in next 5 days.',
+        riskScore: 45,
+        probability: 35,
+        impact: 'medium' as const,
+        timeframe: '3-5 days',
+        affectedProducts: 8900,
+        preventiveActions: ['Alternative routing', 'Backup supplier activation', 'Inventory buffer'],
+        confidenceLevel: 72,
+        createdAt: new Date()
+      },
+      {
+        id: 'risk-003',
+        category: 'quality' as const,
+        title: 'Produce Quality Degradation',
+        description: 'Machine learning models predict accelerated spoilage rates for organic produce based on storage conditions.',
+        riskScore: 62,
+        probability: 58,
+        impact: 'medium' as const,
+        timeframe: '24-48 hours',
+        affectedProducts: 3200,
+        preventiveActions: ['Optimize storage humidity', 'Priority distribution', 'Quality inspections'],
+        confidenceLevel: 91,
+        createdAt: new Date()
+      },
+      {
+        id: 'risk-004',
+        category: 'compliance' as const,
+        title: 'Regulatory Audit Alert',
+        description: 'Pattern analysis indicates higher probability of surprise FDA inspection based on recent industry incidents.',
+        riskScore: 55,
+        probability: 42,
+        impact: 'high' as const,
+        timeframe: '1-2 weeks',
+        affectedProducts: 0,
+        preventiveActions: ['Documentation review', 'Staff training', 'Process audits'],
+        confidenceLevel: 68,
+        createdAt: new Date()
+      }
+    ];
+
+    return predictions;
+  }
+
+  private generatePerformanceMetrics(): PerformanceMetric[] {
+    return [
+      {
+        id: 'metric-001',
+        name: 'Supply Chain Efficiency',
+        value: 94.2,
+        unit: '%',
+        trend: 'up',
+        changePercent: 2.1,
+        benchmark: 89.5,
+        target: 95.0,
+        category: 'efficiency'
+      },
+      {
+        id: 'metric-002',
+        name: 'Food Safety Score',
+        value: 99.1,
+        unit: '%',
+        trend: 'stable',
+        changePercent: 0.0,
+        benchmark: 97.8,
+        target: 99.5,
+        category: 'safety'
+      },
+      {
+        id: 'metric-003',
+        name: 'Carbon Footprint',
+        value: 2.34,
+        unit: 'kg CO2/item',
+        trend: 'down',
+        changePercent: -5.2,
+        benchmark: 2.67,
+        target: 2.20,
+        category: 'sustainability'
+      },
+      {
+        id: 'metric-004',
+        name: 'Quality Compliance',
+        value: 98.7,
+        unit: '%',
+        trend: 'up',
+        changePercent: 1.3,
+        benchmark: 96.2,
+        target: 99.0,
+        category: 'quality'
+      }
+    ];
+  }
+
+  private generateSupplyChainInsights(): SupplyChainInsight[] {
+    return [
+      {
+        id: 'insight-001',
+        type: 'cost_saving',
+        title: 'Optimize Transportation Routes',
+        description: 'AI identified 12% fuel savings by consolidating deliveries and optimizing route planning across 47 stores.',
+        potentialSavings: 245000,
+        implementationTime: '2-3 weeks',
+        difficulty: 'medium',
+        priority: 'high',
+        roiPercent: 340
+      },
+      {
+        id: 'insight-002',
+        type: 'efficiency',
+        title: 'Automated Inventory Reordering',
+        description: 'Machine learning can predict demand patterns and automate 89% of routine reorder decisions.',
+        potentialSavings: 156000,
+        implementationTime: '4-6 weeks',
+        difficulty: 'hard',
+        priority: 'medium',
+        roiPercent: 220
+      },
+      {
+        id: 'insight-003',
+        type: 'risk_mitigation',
+        title: 'Supplier Diversification',
+        description: 'Reduce single-supplier dependency for critical items by establishing relationships with 3 backup suppliers.',
+        potentialSavings: 89000,
+        implementationTime: '6-8 weeks',
+        difficulty: 'medium',
+        priority: 'high',
+        roiPercent: 180
+      },
+      {
+        id: 'insight-004',
+        type: 'optimization',
+        title: 'Cold Chain Enhancement',
+        description: 'IoT-based temperature monitoring can reduce spoilage by 23% and improve food safety compliance.',
+        potentialSavings: 312000,
+        implementationTime: '3-4 weeks',
+        difficulty: 'easy',
+        priority: 'critical',
+        roiPercent: 450
+      }
+    ];
+  }
+
+  private generateTrendData() {
+    const now = new Date();
+    const generateTrend = (baseValue: number, variance: number, points: number = 10) => {
+      return Array.from({ length: points }, (_, i) => ({
+        timestamp: new Date(now.getTime() - (points - i) * 30 * 60 * 1000), // 30 min intervals
+        value: baseValue + (Math.random() - 0.5) * variance,
+        category: 'trend'
+      }));
+    };
+
+    return {
+      foodSafety: generateTrend(98.5, 2),
+      supplierPerformance: generateTrend(94, 8),
+      carbonFootprint: generateTrend(2.4, 0.6),
+      responseTime: generateTrend(2.1, 0.8)
     };
   }
 

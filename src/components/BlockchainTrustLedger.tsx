@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from 
 import { Shield, CheckCircle, Eye, Link, Blocks, AlertTriangle, Clock, MapPin, Truck, Leaf, Users, FileText, Zap, Search, Filter, SortAsc, SortDesc } from 'lucide-react';
 import { useBlockchainData } from '../hooks/useBlockchainData';
 import { BlockchainTransaction } from '../types/blockchain';
+import PredictiveAnalytics from './PredictiveAnalytics';
 
 const BlockchainTrustLedger = () => {
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -153,11 +154,12 @@ const BlockchainTrustLedger = () => {
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="activity" className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="activity">Live Activity</TabsTrigger>
           <TabsTrigger value="issues">Critical Issues</TabsTrigger>
           <TabsTrigger value="traceability">Product Traceability</TabsTrigger>
           <TabsTrigger value="compliance">Compliance Dashboard</TabsTrigger>
+          <TabsTrigger value="analytics">AI Analytics</TabsTrigger>
         </TabsList>
 
         <TabsContent value="activity" className="space-y-4">
@@ -531,6 +533,19 @@ const BlockchainTrustLedger = () => {
               </div>
             </Card>
           </div>
+        </TabsContent>
+
+        <TabsContent value="analytics" className="space-y-4">
+          <Card className="p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h3 className="text-xl font-semibold text-gray-900">Predictive Intelligence & Analytics</h3>
+              <div className="flex items-center space-x-2">
+                <div className="w-3 h-3 rounded-full bg-purple-400 animate-pulse"></div>
+                <span className="text-sm text-gray-600">AI models running</span>
+              </div>
+            </div>
+            <PredictiveAnalytics data={blockchainData.predictiveAnalytics} />
+          </Card>
         </TabsContent>
       </Tabs>
     </div>
