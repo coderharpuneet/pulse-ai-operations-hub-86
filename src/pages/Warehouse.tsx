@@ -2,6 +2,9 @@
 import React from 'react';
 import Header from '@/components/Header';
 import DockOperations from '@/components/DockOperations';
+import InventoryTracker from '@/components/InventoryTracker';
+import EquipmentMonitor from '@/components/EquipmentMonitor';
+import WarehouseAnalytics from '@/components/WarehouseAnalytics';
 
 const Warehouse = () => {
   return (
@@ -10,9 +13,22 @@ const Warehouse = () => {
       <main className="container mx-auto px-6 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Warehouse Management</h1>
-          <p className="text-gray-600">Real-time warehouse operations and dock management</p>
+          <p className="text-gray-600">AI-powered warehouse operations, real-time monitoring, and predictive analytics</p>
         </div>
-        <DockOperations />
+        
+        <div className="space-y-8">
+          {/* Core Dock Operations */}
+          <DockOperations />
+          
+          {/* Real-time Inventory Management */}
+          <InventoryTracker />
+          
+          {/* Equipment Health Monitoring */}
+          <EquipmentMonitor />
+          
+          {/* Advanced Analytics & Predictions */}
+          <WarehouseAnalytics />
+        </div>
       </main>
     </div>
   );
