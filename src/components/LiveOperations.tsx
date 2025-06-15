@@ -285,7 +285,7 @@ const LiveOperations = () => {
             <Activity className="h-5 w-5 text-purple-500" />
             <div>
               <p className="text-sm text-gray-600">System Load</p>
-              <p className="text-2xl font-bold text-purple-600">{metrics.systemLoad}%</p>
+              <p className="text-2xl font-bold text-purple-600">{metrics.systemLoad.toFixed(2)}%</p>
             </div>
           </div>
         </Card>
@@ -390,7 +390,7 @@ const LiveOperations = () => {
               </span>
               <span className="flex items-center space-x-1">
                 <Activity className="h-3 w-3" />
-                <span>System load: {metrics.systemLoad}%</span>
+                <span>System load: {metrics.systemLoad.toFixed(2)}%</span>
               </span>
             </div>
             <span>Auto-refresh: 8s</span>
