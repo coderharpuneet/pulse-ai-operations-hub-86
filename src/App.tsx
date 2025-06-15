@@ -19,6 +19,7 @@ import CCTV from "./pages/CCTV";
 import Analytics from "./pages/Analytics";
 import DockOps from "./pages/DockOps";
 import Monitor from "./pages/Monitor";
+import AdvancedMaintenance from "./pages/AdvancedMaintenance";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -45,6 +46,7 @@ const App = () => (
           <Route path="/analytics" element={<Analytics />} />
           <Route path="/dock-ops" element={<DockOps />} />
           <Route path="/monitor" element={<Monitor />} />
+          <Route path="/advanced-maintenance" element={<AdvancedMaintenance />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
