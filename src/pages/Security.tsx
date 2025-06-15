@@ -13,7 +13,7 @@ const Security = () => {
           <h1 className="text-3xl font-bold text-gray-900 mb-2">Security Intelligence</h1>
           <p className="text-gray-600">AI-powered security monitoring and threat detection</p>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           <SecurityIntelligenceFeed />
           <QuickContactDirectory />
         </div>

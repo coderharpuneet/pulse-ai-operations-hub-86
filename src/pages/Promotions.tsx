@@ -1,10 +1,42 @@
 
 import React from 'react';
 import Header from '@/components/Header';
-import MetricCard from '@/components/MetricCard';
-import { TrendingUp, Target, Users, ShoppingCart } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { TrendingUp, Target, Users, BarChart3, Zap, Clock } from 'lucide-react';
 
 const Promotions = () => {
+  const campaigns = [
+    {
+      id: 1,
+      name: 'Back to School Electronics',
+      status: 'active',
+      performance: 87,
+      engagement: '12.4K',
+      conversion: '8.2%',
+      revenue: '$142K'
+    },
+    {
+      id: 2,
+      name: 'Weekend Grocery Deals',
+      status: 'active',
+      performance: 94,
+      engagement: '23.1K',
+      conversion: '12.7%',
+      revenue: '$89K'
+    },
+    {
+      id: 3,
+      name: 'Fall Fashion Preview',
+      status: 'scheduled',
+      performance: 0,
+      engagement: '0',
+      conversion: '0%',
+      revenue: '$0'
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-teal-50">
       <Header />
@@ -14,68 +46,87 @@ const Promotions = () => {
           <p className="text-gray-600">AI-powered promotional campaigns and optimization</p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <MetricCard
-            title="Active Promotions"
-            value="47"
-            change="+12 this week"
-            trend="up"
-            icon={<Target className="h-6 w-6" />}
-            gradient="bg-gradient-to-br from-purple-50 to-white"
-          />
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center space-x-2 text-lg">
+                <TrendingUp className="h-5 w-5 text-green-500" />
+                <span>Active Campaigns</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-green-600">47</div>
+              <p className="text-sm text-gray-600">Running promotions</p>
+            </CardContent>
+          </Card>
           
-          <MetricCard
-            title="AI Boost Revenue"
-            value="$284k"
-            change="+15.2% vs manual"
-            trend="up"
-            icon={<TrendingUp className="h-6 w-6" />}
-            gradient="bg-gradient-to-br from-green-50 to-white"
-          />
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center space-x-2 text-lg">
+                <Target className="h-5 w-5 text-blue-500" />
+                <span>Avg Performance</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-blue-600">89%</div>
+              <p className="text-sm text-gray-600">Campaign success rate</p>
+            </CardContent>
+          </Card>
           
-          <MetricCard
-            title="Target Reach"
-            value="89.4%"
-            change="+3.2% accuracy"
-            trend="up"
-            icon={<Users className="h-6 w-6" />}
-            gradient="bg-gradient-to-br from-blue-50 to-white"
-          />
-          
-          <MetricCard
-            title="Conversion Rate"
-            value="12.8%"
-            change="+2.1% from AI"
-            trend="up"
-            icon={<ShoppingCart className="h-6 w-6" />}
-            gradient="bg-gradient-to-br from-orange-50 to-white"
-          />
+          <Card>
+            <CardHeader className="pb-3">
+              <CardTitle className="flex items-center space-x-2 text-lg">
+                <BarChart3 className="h-5 w-5 text-purple-500" />
+                <span>Total Revenue</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="text-3xl font-bold text-purple-600">$2.4M</div>
+              <p className="text-sm text-gray-600">This month</p>
+            </CardContent>
+          </Card>
         </div>
 
-        <div className="bg-white rounded-xl shadow-lg p-6">
-          <h2 className="text-xl font-semibold mb-4">AI-Generated Promotions</h2>
-          <p className="text-gray-600 mb-6">Smart promotional campaigns based on real-time data analysis</p>
-          
-          <div className="space-y-4">
-            <div className="p-4 bg-gradient-to-r from-purple-50 to-pink-50 rounded-lg border">
-              <h3 className="font-medium text-gray-900 mb-2">Weekend Electronics Boost</h3>
-              <p className="text-sm text-gray-600 mb-2">AI detected 34% higher electronics demand on weekends</p>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-purple-600">15% off Electronics</span>
-                <span className="text-sm text-gray-500">Projected: +$47k revenue</span>
-              </div>
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
+              <Zap className="h-5 w-5 text-orange-500" />
+              <span>Campaign Performance</span>
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              {campaigns.map((campaign) => (
+                <div key={campaign.id} className="border rounded-lg p-4 hover:bg-gray-50">
+                  <div className="flex items-center justify-between mb-3">
+                    <h3 className="font-semibold text-gray-900">{campaign.name}</h3>
+                    <Badge className={campaign.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}>
+                      {campaign.status}
+                    </Badge>
+                  </div>
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                    <div>
+                      <span className="text-gray-600">Performance:</span>
+                      <div className="font-medium">{campaign.performance}%</div>
+                    </div>
+                    <div>
+                      <span className="text-gray-600">Engagement:</span>
+                      <div className="font-medium">{campaign.engagement}</div>
+                    </div>
+                    <div>
+                      <span className="text-gray-600">Conversion:</span>
+                      <div className="font-medium">{campaign.conversion}</div>
+                    </div>
+                    <div>
+                      <span className="text-gray-600">Revenue:</span>
+                      <div className="font-medium">{campaign.revenue}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
-            
-            <div className="p-4 bg-gradient-to-r from-green-50 to-teal-50 rounded-lg border">
-              <h3 className="font-medium text-gray-900 mb-2">Grocery Rush Hour Special</h3>
-              <p className="text-sm text-gray-600 mb-2">Peak shopping times: 5-7 PM weekdays</p>
-              <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-green-600">Buy 2 Get 1 Free Produce</span>
-                <span className="text-sm text-gray-500">Projected: +$23k revenue</span>
-              </div>
-            </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </main>
     </div>
   );

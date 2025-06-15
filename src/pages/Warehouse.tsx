@@ -9,7 +9,7 @@ const Warehouse = () => {
       <Header />
       <main className="container mx-auto px-6 py-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Warehouse View</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-2">Warehouse Management</h1>
           <p className="text-gray-600">Real-time warehouse operations and dock management</p>
         </div>
         <DockOperations />
