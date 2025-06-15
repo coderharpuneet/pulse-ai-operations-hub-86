@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import Header from '@/components/Header';
 import DashboardGrid from '@/components/DashboardGrid';
+import FeaturesGrid from '@/components/FeaturesGrid';
 import LiveOperations from '@/components/LiveOperations';
 import DockOperations from '@/components/DockOperations';
 import SustainabilityTracker from '@/components/SustainabilityTracker';
@@ -30,7 +31,7 @@ const Index = () => {
       
       <main className="container mx-auto px-6 py-8 relative z-10">
         {/* Hero Section */}
-        <div className="text-center mb-12 relative">
+        <div className="text-center mb-16 relative">
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600/10 via-purple-600/10 to-teal-600/10 rounded-3xl blur-3xl"></div>
           <div className="relative z-10">
             <div className="inline-flex items-center space-x-3 glass rounded-full px-8 py-4 mb-8 shadow-2xl border border-white/30">
@@ -80,17 +81,22 @@ const Index = () => {
         </div>
 
         {/* Dashboard Metrics */}
-        <div className="animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+        <div className="animate-fade-in-up mb-16" style={{ animationDelay: '0.6s' }}>
           <DashboardGrid />
         </div>
 
+        {/* Features Grid */}
+        <div className="animate-fade-in-up" style={{ animationDelay: '0.7s' }}>
+          <FeaturesGrid />
+        </div>
+
         {/* Security Intelligence Feed */}
-        <div className="animate-fade-in-up mb-8" style={{ animationDelay: '0.7s' }}>
+        <div className="animate-fade-in-up mb-8" style={{ animationDelay: '0.8s' }}>
           <SecurityIntelligenceFeed />
         </div>
 
         {/* Two Column Layout for Store Feed and Quick Contacts */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8 animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8 animate-fade-in-up" style={{ animationDelay: '0.9s' }}>
           <div className="lg:col-span-2">
             <StoreFeed />
           </div>
@@ -100,7 +106,7 @@ const Index = () => {
         </div>
 
         {/* Main Dashboard Tabs */}
-        <div className="animate-fade-in-up" style={{ animationDelay: '0.9s' }}>
+        <div className="animate-fade-in-up" style={{ animationDelay: '1s' }}>
           <Tabs defaultValue="operations" className="w-full">
             <TabsList className="grid w-full grid-cols-2 lg:grid-cols-8 lg:w-auto mb-8 p-2 bg-gradient-to-r from-blue-100 to-purple-100 border-2 border-blue-200/50 shadow-xl">
               <TabsTrigger value="operations" className="text-xs font-medium flex items-center space-x-1 data-[state=active]:bg-white data-[state=active]:shadow-lg transition-all duration-300">
@@ -172,7 +178,7 @@ const Index = () => {
         </div>
 
         {/* AI Insights Banner */}
-        <div className="mt-12 relative overflow-hidden rounded-3xl animate-fade-in-up" style={{ animationDelay: '1s' }}>
+        <div className="mt-12 relative overflow-hidden rounded-3xl animate-fade-in-up" style={{ animationDelay: '1.1s' }}>
           <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-teal-600"></div>
           <div className="absolute inset-0 bg-black/10"></div>
           <div className="relative z-10 p-8 text-white">
