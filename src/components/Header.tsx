@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Bell, User, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -13,6 +12,7 @@ const Header = () => {
   const [isLoginDialogOpen, setIsLoginDialogOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [adminName, setAdminName] = useState('');
+  const [loginError, setLoginError] = useState('');
   
   const isActive = (path: string) => location.pathname === path;
   
@@ -35,25 +35,40 @@ const Header = () => {
   };
 
   const handleLogin = (username: string, password: string) => {
+    console.log('Attempting login with:', { username, password });
+    
+    // Clear any previous error
+    setLoginError('');
+    
     // Simple demo authentication - in real app, this would call an API
-    if (username === 'admin' && password === 'admin123') {
+    if (username.trim() === 'admin' && password.trim() === 'admin123') {
+      console.log('Login successful');
       setIsLoggedIn(true);
       setAdminName('Admin User');
       setIsLoginDialogOpen(false);
+      setLoginError('');
     } else {
-      alert('Invalid credentials. Try admin/admin123');
+      console.log('Login failed - invalid credentials');
+      setLoginError('Invalid credentials. Please use admin/admin123');
     }
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
     setAdminName('');
+    setLoginError('');
   };
 
   const handleUserClick = () => {
     if (!isLoggedIn) {
+      setLoginError(''); // Clear any previous error when opening dialog
       setIsLoginDialogOpen(true);
     }
+  };
+
+  const handleLoginDialogClose = () => {
+    setIsLoginDialogOpen(false);
+    setLoginError(''); // Clear error when closing dialog
   };
   
   return (
@@ -222,8 +237,9 @@ const Header = () => {
       {/* Login Dialog */}
       <LoginDialog 
         isOpen={isLoginDialogOpen}
-        onClose={() => setIsLoginDialogOpen(false)}
+        onClose={handleLoginDialogClose}
         onLogin={handleLogin}
+        errorMessage={loginError}
       />
     </header>
   );

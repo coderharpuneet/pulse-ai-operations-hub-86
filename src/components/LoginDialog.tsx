@@ -6,6 +6,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
 } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 
@@ -13,26 +14,40 @@ interface LoginDialogProps {
   isOpen: boolean;
   onClose: () => void;
   onLogin: (username: string, password: string) => void;
+  errorMessage?: string;
 }
 
-const LoginDialog = ({ isOpen, onClose, onLogin }: LoginDialogProps) => {
+const LoginDialog = ({ isOpen, onClose, onLogin, errorMessage }: LoginDialogProps) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('Login attempt:', { username, password });
     onLogin(username, password);
+  };
+
+  const handleClose = () => {
     setUsername('');
     setPassword('');
+    onClose();
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onOpenChange={handleClose}>
       <DialogContent className="sm:max-w-md bg-white">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold text-gray-900">Admin Login</DialogTitle>
+          <DialogDescription className="text-gray-600">
+            Enter your admin credentials to access the system
+          </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
+          {errorMessage && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+              {errorMessage}
+            </div>
+          )}
           <div className="space-y-2">
             <label htmlFor="username" className="text-sm font-medium text-gray-700">
               Username
@@ -71,7 +86,7 @@ const LoginDialog = ({ isOpen, onClose, onLogin }: LoginDialogProps) => {
             <Button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-700 text-white">
               Login
             </Button>
-            <Button type="button" variant="outline" onClick={onClose} className="flex-1">
+            <Button type="button" variant="outline" onClick={handleClose} className="flex-1">
               Cancel
             </Button>
           </div>
