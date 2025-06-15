@@ -6,6 +6,13 @@ import LiveOperations from '@/components/LiveOperations';
 import DockOperations from '@/components/DockOperations';
 import SustainabilityTracker from '@/components/SustainabilityTracker';
 import BlockchainTrustLedger from '@/components/BlockchainTrustLedger';
+import SecurityIntelligenceFeed from '@/components/SecurityIntelligenceFeed';
+import SecurityOpsAnalytics from '@/components/SecurityOpsAnalytics';
+import WorkforceIntelligencePanel from '@/components/WorkforceIntelligencePanel';
+import LiveStoreHeatmap from '@/components/LiveStoreHeatmap';
+import StoreFeed from '@/components/StoreFeed';
+import QuickContactDirectory from '@/components/QuickContactDirectory';
+import SimulatedCCTVDetection from '@/components/SimulatedCCTVDetection';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const Index = () => {
@@ -34,18 +41,49 @@ const Index = () => {
           <DashboardGrid />
         </div>
 
+        {/* Security Intelligence Feed */}
+        <div className="animate-fade-in-up mb-8" style={{ animationDelay: '0.5s' }}>
+          <SecurityIntelligenceFeed />
+        </div>
+
+        {/* Two Column Layout for Store Feed and Quick Contacts */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8 animate-fade-in-up" style={{ animationDelay: '0.55s' }}>
+          <div className="lg:col-span-2">
+            <StoreFeed />
+          </div>
+          <div>
+            <QuickContactDirectory />
+          </div>
+        </div>
+
         {/* Main Dashboard Tabs */}
         <div className="animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
           <Tabs defaultValue="operations" className="w-full">
-            <TabsList className="grid w-full grid-cols-4 lg:w-auto lg:grid-cols-4 mb-8">
-              <TabsTrigger value="operations" className="text-sm">Live Operations</TabsTrigger>
-              <TabsTrigger value="dock" className="text-sm">Dock Management</TabsTrigger>
-              <TabsTrigger value="sustainability" className="text-sm">Sustainability</TabsTrigger>
-              <TabsTrigger value="blockchain" className="text-sm">TrustLedger</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 lg:grid-cols-8 lg:w-auto lg:grid-cols-8 mb-8">
+              <TabsTrigger value="operations" className="text-xs">Live Ops</TabsTrigger>
+              <TabsTrigger value="security" className="text-xs">Security</TabsTrigger>
+              <TabsTrigger value="workforce" className="text-xs">Workforce</TabsTrigger>
+              <TabsTrigger value="heatmap" className="text-xs">Store Map</TabsTrigger>
+              <TabsTrigger value="dock" className="text-xs">Dock</TabsTrigger>
+              <TabsTrigger value="sustainability" className="text-xs">Green</TabsTrigger>
+              <TabsTrigger value="blockchain" className="text-xs">TrustLedger</TabsTrigger>
+              <TabsTrigger value="cctv" className="text-xs">CCTV AI</TabsTrigger>
             </TabsList>
 
             <TabsContent value="operations" className="space-y-6">
               <LiveOperations />
+            </TabsContent>
+
+            <TabsContent value="security" className="space-y-6">
+              <SecurityOpsAnalytics />
+            </TabsContent>
+
+            <TabsContent value="workforce" className="space-y-6">
+              <WorkforceIntelligencePanel />
+            </TabsContent>
+
+            <TabsContent value="heatmap" className="space-y-6">
+              <LiveStoreHeatmap />
             </TabsContent>
 
             <TabsContent value="dock" className="space-y-6">
@@ -58,6 +96,10 @@ const Index = () => {
 
             <TabsContent value="blockchain" className="space-y-6">
               <BlockchainTrustLedger />
+            </TabsContent>
+
+            <TabsContent value="cctv" className="space-y-6">
+              <SimulatedCCTVDetection />
             </TabsContent>
           </Tabs>
         </div>

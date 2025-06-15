@@ -1,0 +1,196 @@
+
+import React, { useState } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { AlertTriangle, Package, MessageSquare, Clock, User, Send } from 'lucide-react';
+
+const StoreFeed = () => {
+  const [posts, setPosts] = useState([
+    {
+      id: 1,
+      type: 'inventory',
+      title: 'Nintendo Switch: SOLD OUT',
+      message: 'Last unit sold 5 minutes ago. Restock ETA: Tomorrow 2 PM',
+      author: 'System Alert',
+      timestamp: '2 min ago',
+      priority: 'high'
+    },
+    {
+      id: 2,
+      type: 'inventory',
+      title: 'iPad – only 6 left',
+      message: 'Low stock alert triggered. Consider promoting alternative tablets.',
+      author: 'Inventory System',
+      timestamp: '8 min ago',
+      priority: 'medium'
+    },
+    {
+      id: 3,
+      type: 'staff',
+      title: 'Restock aisle 5',
+      message: 'Cereal shelves are running low. Pallets available in back storage.',
+      author: 'Sarah Chen',
+      timestamp: '12 min ago',
+      priority: 'normal'
+    },
+    {
+      id: 4,
+      type: 'maintenance',
+      title: 'Spill near bakery',
+      message: 'Customer spilled coffee near bakery entrance. Wet floor signs placed.',
+      author: 'Mike Rodriguez',
+      timestamp: '15 min ago',
+      priority: 'normal'
+    },
+    {
+      id: 5,
+      type: 'maintenance',
+      title: 'Freezer door stuck',
+      message: 'Frozen foods section - door 3 handle mechanism jammed. Maintenance notified.',
+      author: 'Emma Thompson',
+      timestamp: '22 min ago',
+      priority: 'medium'
+    }
+  ]);
+
+  const [newPost, setNewPost] = useState('');
+
+  const handlePostSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!newPost.trim()) return;
+
+    const post = {
+      id: Date.now(),
+      type: 'staff',
+      title: newPost.substring(0, 50),
+      message: newPost,
+      author: 'You',
+      timestamp: 'Just now',
+      priority: 'normal'
+    };
+
+    setPosts(prev => [post, ...prev]);
+    setNewPost('');
+  };
+
+  const getTypeIcon = (type: string) => {
+    switch (type) {
+      case 'inventory': return <Package className="h-4 w-4 text-blue-500" />;
+      case 'maintenance': return <AlertTriangle className="h-4 w-4 text-orange-500" />;
+      case 'staff': return <MessageSquare className="h-4 w-4 text-green-500" />;
+      default: return <MessageSquare className="h-4 w-4 text-gray-500" />;
+    }
+  };
+
+  const getPriorityColor = (priority: string) => {
+    switch (priority) {
+      case 'high': return 'bg-red-100 text-red-800';
+      case 'medium': return 'bg-orange-100 text-orange-800';
+      case 'normal': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case 'inventory': return 'bg-blue-100 text-blue-800';
+      case 'maintenance': return 'bg-orange-100 text-orange-800';
+      case 'staff': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center space-x-2">
+          <MessageSquare className="h-5 w-5 text-blue-500" />
+          <span>Store Feed</span>
+          <Badge className="bg-blue-100 text-blue-800">Live Updates</Badge>
+        </CardTitle>
+      </CardHeader>
+      <CardContent>
+        {/* Quick Post Form */}
+        <form onSubmit={handlePostSubmit} className="mb-6">
+          <div className="flex space-x-2">
+            <Input
+              placeholder="Post a quick note (e.g., 'Spill in aisle 3', 'Restock needed'...)"
+              value={newPost}
+              onChange={(e) => setNewPost(e.target.value)}
+              className="flex-1"
+            />
+            <Button type="submit" size="sm">
+              <Send className="h-4 w-4" />
+            </Button>
+          </div>
+        </form>
+
+        {/* Posts Feed */}
+        <div className="space-y-4 max-h-96 overflow-y-auto">
+          {posts.map((post) => (
+            <div
+              key={post.id}
+              className="border rounded-lg p-4 hover:bg-gray-50 transition-colors"
+            >
+              <div className="flex items-start justify-between mb-2">
+                <div className="flex items-center space-x-2">
+                  {getTypeIcon(post.type)}
+                  <h4 className="font-medium text-gray-900">{post.title}</h4>
+                </div>
+                <div className="flex space-x-1">
+                  <Badge className={getTypeColor(post.type)} size="sm">
+                    {post.type}
+                  </Badge>
+                  <Badge className={getPriorityColor(post.priority)} size="sm">
+                    {post.priority}
+                  </Badge>
+                </div>
+              </div>
+              
+              <p className="text-sm text-gray-600 mb-3">{post.message}</p>
+              
+              <div className="flex items-center justify-between text-xs text-gray-500">
+                <span className="flex items-center space-x-1">
+                  <User className="h-3 w-3" />
+                  <span>{post.author}</span>
+                </span>
+                <span className="flex items-center space-x-1">
+                  <Clock className="h-3 w-3" />
+                  <span>{post.timestamp}</span>
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Activity Summary */}
+        <div className="mt-6 pt-4 border-t border-gray-200">
+          <div className="grid grid-cols-3 gap-4 text-center text-sm">
+            <div>
+              <div className="font-semibold text-blue-600">
+                {posts.filter(p => p.type === 'inventory').length}
+              </div>
+              <div className="text-gray-600">Inventory Alerts</div>
+            </div>
+            <div>
+              <div className="font-semibold text-orange-600">
+                {posts.filter(p => p.type === 'maintenance').length}
+              </div>
+              <div className="text-gray-600">Maintenance Issues</div>
+            </div>
+            <div>
+              <div className="font-semibold text-green-600">
+                {posts.filter(p => p.type === 'staff').length}
+              </div>
+              <div className="text-gray-600">Staff Notes</div>
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
+};
+
+export default StoreFeed;
